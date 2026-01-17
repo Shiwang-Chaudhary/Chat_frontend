@@ -66,7 +66,9 @@ class LoginView extends GetView<LoginController> {
                 child: SizedBox(
                     width: 140,
                     height: 60,
-                    child: CustomLargeButton(onTap: () {}, text: "LOGIN"))),
+                    child: CustomLargeButton(onTap: () {
+                      controller.login();
+                    }, text: "LOGIN"))),
             const SizedBox(
               height: 23,
             ),

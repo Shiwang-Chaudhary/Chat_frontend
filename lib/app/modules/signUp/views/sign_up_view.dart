@@ -75,7 +75,7 @@ class SignUpView extends GetView<SignUpController> {
                   child: CustomLargeButton(
                     size: 20,
                     onTap: () {
-                      Get.offAndToNamed(Routes.BOTTOM_NAV_BAR);
+                      controller.signUp();
                     },
                     text: "Submit",
                   ),
