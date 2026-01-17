@@ -24,6 +24,10 @@ class HomeView extends GetView<HomeController> {
           backgroundColor: const Color(0xFF24243E),
         body: Column(
           children: [
+            ElevatedButton(onPressed: ()async{
+               controller.getLoggedUserId();
+               controller.getChats();
+            }, child: CustomText(text: "TEST BUTTON")),
             CustomTextfield(
                 controller: controller.searchController,
                 prefixIcon: Icons.search,
@@ -32,13 +36,20 @@ class HomeView extends GetView<HomeController> {
                 SizedBox(height: 10,),
             Expanded(
                 child: ListView.builder(
-                    itemCount: 10,
+                    itemCount: controller.chats.length,
                     itemBuilder: (context, index) {
+                      final chat = controller.chats[index];
+                      final List members = chat["members"];
+                      final otherUser = members.firstWhere((user) => user["_id"]!=controller.loggedUserId);
+                      final String otherUserName = otherUser["name"];
+                      print("OTHER USER :${otherUser}");
+                      print("OTHER USER name :${otherUser["name"]}");
+                      print("OTHER USER ID:${otherUser["_id"]}");
                       return CustomTile(
                           icon: Icons.chat,
-                          text: "Chat ${index + 1}",
+                          text: controller.capitalizeEachWord(otherUserName),
                           ontap: () {
-                            print("Tapped on Chat ${index + 1}");
+                            print("Tapped on Chat ${otherUserName}");
                             Get.toNamed(Routes.CHAT_SCREEN);
                           });
                     }))
