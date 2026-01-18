@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  static const baseUrl = "http://192.168.1.16:3000";
+  static const baseUrl = "http://192.168.1.2:3000";
   //We use {String? token} so that during function call, ApiService.post(body,"chat/",{"token":token})
   static Future post(Map body, String endpoints, {String? token}) async {
     try {
@@ -26,7 +26,7 @@ class ApiService {
     }
   }
 
-  static Future get(String endpoints, String token) async {
+  static Future get(String endpoints, String? token) async {
     try {
       final url = "$baseUrl/$endpoints";
       final uri = Uri.parse(url);

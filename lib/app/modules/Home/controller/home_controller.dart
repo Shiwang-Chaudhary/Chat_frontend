@@ -35,7 +35,9 @@ class HomeController extends GetxController {
     final token = await StorageService.getData("token");
     print("LOGGED USER ID :$loggedUserId");
     final Map response = await ApiService.get(ApiEndpoints.getAllChats,
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NmJiYmU4M2MzMWZkMDI1N2RiNzljMyIsImVtYWlsIjoic2hpd2FuZ0BnbWFpbC5jb20iLCJpYXQiOjE3Njg2NzA3OTYsImV4cCI6MTc3MTI2Mjc5Nn0.kyPN8lQ9yvffEjF3TWgEbmlLRdMpq0dwhTeIguYwlHY");
+        token
+        //"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NmJiYmU4M2MzMWZkMDI1N2RiNzljMyIsImVtYWlsIjoic2hpd2FuZ0BnbWFpbC5jb20iLCJpYXQiOjE3Njg2NzA3OTYsImV4cCI6MTc3MTI2Mjc5Nn0.kyPN8lQ9yvffEjF3TWgEbmlLRdMpq0dwhTeIguYwlHY"
+        );
     final data = response["data"];
     chats.assignAll(data);
     for (var chat in data) {
