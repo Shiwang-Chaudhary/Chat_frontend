@@ -3,9 +3,15 @@ import 'package:flutter/material.dart';
 
 class MessageContainer extends StatelessWidget {
   final bool isMe;
-  final Map message;
-  const MessageContainer(
-      {super.key, required this.isMe, required this.message});
+  final String message;
+  final String dateTime;
+
+  const MessageContainer({
+    super.key,
+    required this.isMe,
+    required this.message,
+    required this.dateTime,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +23,15 @@ class MessageContainer extends StatelessWidget {
         color: isMe ? Colors.blueAccent : Colors.grey.shade700,
         borderRadius: BorderRadius.circular(14),
       ),
-      child: CustomText(
-        text: message["content"],
-        color: Colors.white,
-        size: 15,
+      child: Column(
+        crossAxisAlignment: isMe
+            ? CrossAxisAlignment.end
+            : CrossAxisAlignment.start,
+        children: [
+          CustomText(text: message, color: Colors.white, size: 15),
+          const SizedBox(height: 4),
+          CustomText(text: dateTime, color: Colors.white70, size: 11),
+        ],
       ),
     );
   }

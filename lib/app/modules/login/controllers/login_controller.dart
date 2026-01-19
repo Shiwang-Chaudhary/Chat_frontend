@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:chat_backend/app/routes/app_routes.dart';
 import 'package:chat_backend/app/services/api_endpoints.dart';
 import 'package:chat_backend/app/services/api_service.dart';
@@ -14,25 +15,26 @@ class LoginController extends GetxController {
   }
 
   void login() async {
-    print(
-        "////////////////////////////////////LOGIN FUNCTION CALLED✅✅///////////////////////////////////////////");
+    log(
+      "////////////////////////////////////LOGIN FUNCTION CALLED✅✅///////////////////////////////////////////",
+    );
     final data = await ApiService.post({
       "email": emailController.text.trim(),
-      "password": passController.text.trim()
+      "password": passController.text.trim(),
     }, ApiEndpoints.login);
-    print("SignUp login: $data");
+    log("SignUp login: $data");
     final token = data["token"];
     final user = data["user"];
     final userName = user["name"];
     final userEmail = user["email"];
     final userId = user["id"];
-    print("USER : $user");
+    log("USER : $user");
     await StorageService.saveData(token, "token");
     await StorageService.saveData(userName, "name");
     await StorageService.saveData(userEmail, "email");
     await StorageService.saveData(userId, "id");
     Get.offAndToNamed(Routes.BOTTOM_NAV_BAR);
     // final receivedToken = await StorageService.getData("token");
-    // print("SAVED TOKEN: $receivedToken");
+    // log("SAVED TOKEN: $receivedToken");
   }
 }

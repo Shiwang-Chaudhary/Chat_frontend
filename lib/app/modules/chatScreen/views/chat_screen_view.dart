@@ -1,3 +1,4 @@
+import 'package:chat_backend/app/services/capitalize_service.dart';
 import 'package:chat_backend/app/widgets/customText.dart';
 import 'package:chat_backend/app/widgets/messageContainer.dart';
 import 'package:chat_backend/app/widgets/messageTextfield.dart';
@@ -8,19 +9,21 @@ import '../controllers/chat_screen_controller.dart';
 class ChatScreenView extends GetView<ChatScreenController> {
   const ChatScreenView({super.key});
 
+  // 🔹 ISO → "DD/MM/YYYY  hh:mm AM/PM"
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF2B2B49),
-
-      // 🔹 APP BAR
       appBar: AppBar(
         backgroundColor: const Color(0xFF24243E),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomText(
-              text: controller.otherUserName,
+              text: CapitalizeService.capitalizeEachWord(
+                controller.otherUserName,
+              ),
               size: 20,
               color: Colors.white,
             ),
@@ -32,32 +35,51 @@ class ChatScreenView extends GetView<ChatScreenController> {
           ],
         ),
       ),
-
-      // 🔹 BODY
       body: Column(
         children: [
-          // 🔹 CHAT MESSAGES
           Expanded(
             child: Obx(
-              () => ListView.builder(
-                padding: const EdgeInsets.all(12),
-                itemCount: controller.messages.length,
-                itemBuilder: (context, index) {
-                  final message = controller.messages[index];
-                  final bool isMe =
-                      message["senderId"] == controller.loggedUserId;
+              () => controller.messages.isEmpty
+                  ? Container(
+                      alignment: Alignment.center,
+                      child: CustomText(
+                        text: "No messages yet. Start the conversation!",
+                        size: 16,
+                        color: Colors.white54,
+                      ),
+                    )
+                  : ListView.builder(
+                      padding: const EdgeInsets.all(12),
+                      itemCount: controller.messages.length,
+                      itemBuilder: (context, index) {
+                        final Map data = controller.messages[index];
 
-                  return Align(
-                      alignment:
-                          isMe ? Alignment.centerRight : Alignment.centerLeft,
-                      child: MessageContainer(isMe: isMe, message: message));
-                },
-              ),
+                        final String message = data["content"] ?? "";
+                        final Map sender = data["sender"];
+                        final String senderId = sender["_id"];
+
+                        final bool isMe = senderId == controller.loggedUserId;
+
+                        final String createdAt = data["createdAt"];
+                        final String dateTime = controller.formatDateTime(
+                          createdAt,
+                        );
+
+                        return Align(
+                          alignment: isMe
+                              ? Alignment.centerRight
+                              : Alignment.centerLeft,
+                          child: MessageContainer(
+                            isMe: isMe,
+                            message: message,
+                            dateTime: dateTime, // 👈 date + time shown here
+                          ),
+                        );
+                      },
+                    ),
             ),
           ),
-
-          // 🔹 MESSAGE INPUT
-          MessageTextfield(controller: controller)
+          MessageTextfield(controller: controller),
         ],
       ),
     );

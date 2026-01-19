@@ -45,7 +45,7 @@ class AppPages {
     GetPage(
       name: Routes.CHAT_SCREEN,
       page: () => const ChatScreenView(),
-      binding: ChatScreenBinding(),
+      //binding: ChatScreenBinding(),
     ),
     GetPage(
       name: Routes.GROUP_CHAT_SCREEN,

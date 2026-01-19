@@ -9,17 +9,10 @@ import '../controllers/bottom_nav_bar_controller.dart';
 class BottomNavBarBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<BottomNavBarController>(
-      () => BottomNavBarController(),
-    );
-    Get.lazyPut<HomeController>(
-      () => HomeController(),
-    );
-    Get.lazyPut<GroupChatScreenController>(
-      () => GroupChatScreenController(),
-    );
-    Get.lazyPut<ProfileController>(
-      () => ProfileController(),
-    );
+    Get.lazyPut<BottomNavBarController>(() => BottomNavBarController());
+    Get.lazyPut<HomeController>(() => HomeController());
+    Get.lazyPut<GroupChatScreenController>(() => GroupChatScreenController());
+    // Get.lazyPut<ChatScreenController>(() => ChatScreenController());
+    Get.lazyPut<ProfileController>(() => ProfileController());
   }
 }
