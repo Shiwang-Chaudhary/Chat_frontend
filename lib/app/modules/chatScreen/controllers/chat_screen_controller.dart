@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:chat_backend/app/services/api_endpoints.dart';
 import 'package:chat_backend/app/services/api_service.dart';
 import 'package:chat_backend/app/services/storage_service.dart';
@@ -18,6 +18,8 @@ class ChatScreenController extends GetxController {
   final TextEditingController messageController = TextEditingController();
   var logger = Logger();
   final RxList messages = [].obs;
+  late final IO.Socket socket;
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -26,22 +28,60 @@ class ChatScreenController extends GetxController {
     chatId = Get.arguments["chatId"];
     otherUserId = otherUser["_id"];
     otherUserName = otherUser["name"];
+    initializeSocket();
     getMessages();
     logger.i("ChatId: $chatId");
     logger.i("Other User: $otherUser");
     logger.i("Other User Id: $otherUserId");
   }
 
+  void initializeSocket() async {
+    final token = await StorageService.getData("token");
+    if (token == null || token.isEmpty) {
+      logger.e("❌ Token is NULL. Socket will fail auth.");
+      return;
+    }
+    socket = IO.io(
+      "http://192.168.1.15:3000",
+      IO.OptionBuilder()
+          .setTransports(["websocket"])
+          .disableAutoConnect()
+          .setExtraHeaders({"Authorization": "Bearer $token"})
+          .build(),
+    );
+    socket.connect();
+
+    socket.onConnect((_) {
+      logger.i("Socket connected: ${socket.id}");
+      socket.emit("joinroom", chatId);
+    });
+    socket.on("receiveMessage", (data) {
+      final Map<String, dynamic> map = data as Map<String, dynamic>;
+      messages.add(map);
+      logger.i("New message received: $data");
+    });
+    socket.onDisconnect((_) {
+      logger.w("❌ Socket disconnected");
+    });
+
+    socket.onConnectError((err) {
+      logger.e("⚠ Socket connect error: $err");
+    });
+  }
+
   void sendMessage() async {
     log("Send message called");
-    final String? token = await StorageService.getData("token");
+    // final String? token = await StorageService.getData("token");
     if (messageController.text.trim().isEmpty) return;
-    final response = await ApiService.post(
-      {"chatId": chatId, "content": messageController.text.trim()},
-      ApiEndpoints.sendMessage,
-      token: token,
-    );
-    log("SEND MESSAGE RESPONSE: $response");
+    final msg = {"chatId": chatId, "content": messageController.text.trim()};
+
+    socket.emit("send-message", msg);
+    // final response = await ApiService.post(
+    //   {"chatId": chatId, "content": messageController.text.trim()},
+    //   ApiEndpoints.sendMessage,
+    //   token: token,
+    // );
+    // log("SEND MESSAGE RESPONSE: $response");
     messageController.clear();
   }
 
@@ -54,7 +94,7 @@ class ChatScreenController extends GetxController {
     );
 
     final List messageList = response["data"];
-
+    logger.i("Fetched Messages: $messageList");
     messages.clear(); //SO THAT OLD MESSAGES ARE REMOVED BEFORE ADDING NEW ONES
     messages.addAll(messageList.cast<Map<String, dynamic>>());
 
