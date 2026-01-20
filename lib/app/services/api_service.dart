@@ -4,7 +4,9 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  static const baseUrl = "http://192.168.1.15:3000";
+  static const baseUrl =
+      // "https://shiwang-chat-backend.onrender.com"
+      "http://192.168.1.15:3000";
   //We use {String? token} so that during function call, ApiService.post(body,"chat/",{"token":token})
   static Future post(Map body, String endpoints, {String? token}) async {
     try {

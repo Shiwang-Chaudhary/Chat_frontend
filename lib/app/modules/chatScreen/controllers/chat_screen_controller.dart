@@ -46,7 +46,7 @@ class ChatScreenController extends GetxController {
       IO.OptionBuilder()
           .setTransports(["websocket"])
           .disableAutoConnect()
-          .setExtraHeaders({"Authorization": "Bearer $token"})
+          .setAuth({"token": token.replaceAll("Bearer ", "")}) // 👈 FIXED
           .build(),
     );
     socket.connect();
@@ -56,7 +56,9 @@ class ChatScreenController extends GetxController {
       socket.emit("joinroom", chatId);
     });
     socket.on("receiveMessage", (data) {
-      final Map<String, dynamic> map = data as Map<String, dynamic>;
+      final Map<String, dynamic> map = Map<String, dynamic>.from(
+        data,
+      ); // 👈 SAFE
       messages.add(map);
       logger.i("New message received: $data");
     });
@@ -73,9 +75,9 @@ class ChatScreenController extends GetxController {
     log("Send message called");
     // final String? token = await StorageService.getData("token");
     if (messageController.text.trim().isEmpty) return;
-    final msg = {"chatId": chatId, "content": messageController.text.trim()};
+    final msg = {"chatId": chatId, "text": messageController.text.trim()};
 
-    socket.emit("send-message", msg);
+    socket.emit("sendMessage", msg);
     // final response = await ApiService.post(
     //   {"chatId": chatId, "content": messageController.text.trim()},
     //   ApiEndpoints.sendMessage,
