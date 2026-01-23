@@ -20,7 +20,12 @@ class HomeController extends GetxController {
     getLoggedUserId();
     getChats();
   }
-
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    searchController.dispose();
+    super.onClose();
+  }
   void getLoggedUserId() async {
     loggedUserId = await StorageService.getData("id");
   }

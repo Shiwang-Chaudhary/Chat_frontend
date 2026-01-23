@@ -38,9 +38,9 @@ class ChatScreenController extends GetxController {
 
   @override
   void onClose() {
+    messageController.dispose();
     if (socket.connected) {
       logger.i("👋 Leaving room: $chatId");
-      socket.emit("leaveroom", chatId);
       socket.dispose();
     }
     super.onClose();

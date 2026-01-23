@@ -10,6 +10,13 @@ class LoginController extends GetxController {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passController = TextEditingController();
   var isPasswordVisible = false.obs;
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    emailController.dispose();
+    passController.dispose();
+    super.onClose();
+  }
   void togglePasswordVisibility() {
     isPasswordVisible.value = !isPasswordVisible.value;
   }

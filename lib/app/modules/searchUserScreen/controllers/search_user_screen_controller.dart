@@ -12,6 +12,12 @@ class SearchUserScreenController extends GetxController {
   RxList users = [].obs;
   late String? chatId;
   final logger = Logger();
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    searchController.dispose();
+    super.onClose();
+  }
   void seachUsers(String text) async {
     final String? token = await StorageService.getData("token");
     final query = text.trim();
