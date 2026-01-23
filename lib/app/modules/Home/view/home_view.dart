@@ -2,12 +2,15 @@ import 'dart:developer';
 import 'package:chat_backend/app/modules/Home/controller/home_controller.dart';
 import 'package:chat_backend/app/modules/chatScreen/controllers/chat_screen_controller.dart';
 import 'package:chat_backend/app/modules/chatScreen/views/chat_screen_view.dart';
+import 'package:chat_backend/app/routes/app_routes.dart';
 import 'package:chat_backend/app/services/capitalize_service.dart';
 import 'package:chat_backend/app/widgets/customText.dart';
 import 'package:chat_backend/app/widgets/customTextfield.dart';
 import 'package:chat_backend/app/widgets/customTile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -35,6 +38,8 @@ class HomeView extends GetView<HomeController> {
             prefixIcon: Icons.search,
             showSuffixIcon: false,
             hintText: "Search personal chats",
+            readOnly: true,
+            onTap: () => Get.toNamed(Routes.SEARCH_USER_SCREEN),
           ),
           SizedBox(height: 10),
           Obx(
@@ -50,11 +55,13 @@ class HomeView extends GetView<HomeController> {
                     (user) => user["_id"] != controller.loggedUserId,
                   );
                   final String otherUserName = otherUser["name"];
-                  log("OTHER USER :${otherUser}");
+                  final String otherUserId = otherUser["_id"];
+                  Logger().i("OTHER USER :${otherUser}");
                   // log("OTHER USER name :${otherUser["name"]}");
                   // log("OTHER USER ID:${otherUser["_id"]}");
                   return CustomTile(
                     icon: Icons.chat,
+                    showSubtitle: true,
                     text: CapitalizeService.capitalizeEachWord(otherUserName),
                     ontap: () {
                       log("Tapped on Chat $otherUserName");
@@ -63,7 +70,7 @@ class HomeView extends GetView<HomeController> {
                         binding: BindingsBuilder(() {
                           Get.put(ChatScreenController());
                         }),
-                        arguments: {"otherUser": otherUser, "chatId": chatId},
+                        arguments: {"otherUserId": otherUserId, "otherUserName":otherUserName,"chatId": chatId},
                       );
                     },
                   );

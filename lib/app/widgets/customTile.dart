@@ -5,13 +5,17 @@ class CustomTile extends StatelessWidget {
   final IconData icon;
   final String text;
   final Color? iconColor;
+  final bool? showSubtitle;
   final VoidCallback ontap;
+  final IconData? trailing;
   const CustomTile(
       {super.key,
       required this.icon,
       required this.text,
       required this.ontap,
-      this.iconColor});
+      this.iconColor,
+      this.showSubtitle,
+      this.trailing});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +23,7 @@ class CustomTile extends StatelessWidget {
       onTap: ontap,
       child: ListTile(
         tileColor: const Color(0xFF24243E),
-        contentPadding: const EdgeInsets.symmetric(vertical: 5,horizontal: 10),
+        contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         leading: CircleAvatar(
           radius: 27,
           backgroundColor: iconColor ?? Colors.yellow,
@@ -35,9 +39,14 @@ class CustomTile extends StatelessWidget {
           size: 20,
           weight: FontWeight.w400,
         ),
-        subtitle: CustomText(text: "Last message preview", color: Colors.white, weight: FontWeight.w400),
+        subtitle: showSubtitle == true
+            ? CustomText(
+                text: "Last message preview",
+                color: Colors.white,
+                weight: FontWeight.w400)
+            : null,
         trailing: Icon(
-          Icons.chevron_right,
+          trailing ?? Icons.chevron_right,
           color: Colors.white,
           size: 30,
         ),

@@ -11,6 +11,8 @@ class CustomTextfield extends StatelessWidget {
   final TextEditingController controller;
   final bool isPasswordVisible;
   final VoidCallback? onTogglePasswordVisibility;
+  final VoidCallback? onTap;
+  final bool? readOnly;
   const CustomTextfield({
     super.key,
     required this.controller,
@@ -21,11 +23,15 @@ class CustomTextfield extends StatelessWidget {
     this.isPassword = false,
     this.isPasswordVisible = false,
     this.onTogglePasswordVisibility,
+    this.onTap,
+    this.readOnly
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onTap: onTap,
+      readOnly: readOnly ?? false,
       controller: controller,
       obscureText: isPassword ? !isPasswordVisible : false,
       style: GoogleFonts.outfit(

@@ -31,18 +31,13 @@ class HomeController extends GetxController {
     final Map response = await ApiService.get(
       ApiEndpoints.getAllChats,
       token,
-      //"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NmJiYmU4M2MzMWZkMDI1N2RiNzljMyIsImVtYWlsIjoic2hpd2FuZ0BnbWFpbC5jb20iLCJpYXQiOjE3Njg2NzA3OTYsImV4cCI6MTc3MTI2Mjc5Nn0.kyPN8lQ9yvffEjF3TWgEbmlLRdMpq0dwhTeIguYwlHY"
     );
     final data = response["data"];
     chats.assignAll(data);
     for (var chat in data) {
       chatIDs.add(chat["_id"]);
-      //log("MODIFIED CHAT:${chat["_id"]}");
     }
     log("CHAT IDs LIST:$chatIDs");
-    // log("Modified data: ${for(){}}");
-    // chats.addAll(data[])
-    // log("CHATS:$data");
     log("CHATS:$chats");
   }
 }

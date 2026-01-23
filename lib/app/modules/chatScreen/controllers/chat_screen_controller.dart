@@ -11,7 +11,7 @@ class ChatScreenController extends GetxController {
   late String? loggedUserId = "USER_1";
   final bool isOnline = true;
   // final Map otherUser = Get.arguments["otherUser"];
-  late final Map otherUser;
+  // late final Map otherUser;
   late final String otherUserId;
   late final String otherUserName;
   late final String chatId;
@@ -24,15 +24,26 @@ class ChatScreenController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    otherUser = Get.arguments["otherUser"];
+    otherUserId = Get.arguments["otherUserId"];
     chatId = Get.arguments["chatId"];
-    otherUserId = otherUser["_id"];
-    otherUserName = otherUser["name"];
+    // otherUserId = otherUser["_id"];
+    otherUserName = Get.arguments["otherUserName"];
     initializeSocket();
     getMessages();
     logger.i("ChatId: $chatId");
-    logger.i("Other User: $otherUser");
+    // logger.i("Other User: $otherUser");
+    logger.i("Other User Id: $otherUserName");
     logger.i("Other User Id: $otherUserId");
+  }
+
+  @override
+  void onClose() {
+    if (socket.connected) {
+      logger.i("👋 Leaving room: $chatId");
+      socket.emit("leaveroom", chatId);
+      socket.dispose();
+    }
+    super.onClose();
   }
 
   void initializeSocket() async {
@@ -42,23 +53,23 @@ class ChatScreenController extends GetxController {
       return;
     }
     socket = IO.io(
-      "http://192.168.1.15:3000",
+      "http://192.168.1.16:3000",
       IO.OptionBuilder()
           .setTransports(["websocket"])
           .disableAutoConnect()
-          .setAuth({"token": token.replaceAll("Bearer ", "")}) // 👈 FIXED
+          .setAuth({"token": token.replaceAll("Bearer ", "")})
           .build(),
     );
     socket.connect();
 
     socket.onConnect((_) {
-      logger.i("Socket connected: ${socket.id}");
+      logger.d("Socket connected: ${socket.id}");
       socket.emit("joinroom", chatId);
     });
     socket.on("receiveMessage", (data) {
       final Map<String, dynamic> map = Map<String, dynamic>.from(
         data,
-      ); // 👈 SAFE
+      );
       messages.add(map);
       logger.i("New message received: $data");
     });
@@ -72,18 +83,10 @@ class ChatScreenController extends GetxController {
   }
 
   void sendMessage() async {
-    log("Send message called");
-    // final String? token = await StorageService.getData("token");
+    logger.d("Send message called");
     if (messageController.text.trim().isEmpty) return;
     final msg = {"chatId": chatId, "text": messageController.text.trim()};
-
     socket.emit("sendMessage", msg);
-    // final response = await ApiService.post(
-    //   {"chatId": chatId, "content": messageController.text.trim()},
-    //   ApiEndpoints.sendMessage,
-    //   token: token,
-    // );
-    // log("SEND MESSAGE RESPONSE: $response");
     messageController.clear();
   }
 
@@ -103,6 +106,7 @@ class ChatScreenController extends GetxController {
     log("MESSAGES LOADED: ${messages.length}");
   }
 
+  void searchUsers() async {}
   String formatDateTime(String isoTime) {
     final DateTime dateTime = DateTime.parse(isoTime).toLocal();
     final int day = dateTime.day;
@@ -114,8 +118,8 @@ class ChatScreenController extends GetxController {
     final int formattedHour = hour == 0
         ? 12
         : hour > 12
-        ? hour - 12
-        : hour;
+            ? hour - 12
+            : hour;
     final String formattedMinute = minute.toString().padLeft(2, '0');
     return "$day/$month/$year  $formattedHour:$formattedMinute $period";
   }
@@ -130,8 +134,8 @@ class ChatScreenController extends GetxController {
     final int formattedHour = hour == 0
         ? 12
         : hour > 12
-        ? hour - 12
-        : hour;
+            ? hour - 12
+            : hour;
 
     final String formattedMinute = minute.toString().padLeft(2, '0');
 
