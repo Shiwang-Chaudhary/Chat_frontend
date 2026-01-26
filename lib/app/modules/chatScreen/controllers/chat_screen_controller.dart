@@ -8,10 +8,8 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
 class ChatScreenController extends GetxController {
-  late String? loggedUserId = "USER_1";
+  late String? loggedUserId;
   final bool isOnline = true;
-  // final Map otherUser = Get.arguments["otherUser"];
-  // late final Map otherUser;
   late final String otherUserId;
   late final String otherUserName;
   late final String chatId;
@@ -26,12 +24,10 @@ class ChatScreenController extends GetxController {
     super.onInit();
     otherUserId = Get.arguments["otherUserId"];
     chatId = Get.arguments["chatId"];
-    // otherUserId = otherUser["_id"];
     otherUserName = Get.arguments["otherUserName"];
     initializeSocket();
     getMessages();
     logger.i("ChatId: $chatId");
-    // logger.i("Other User: $otherUser");
     logger.i("Other User Id: $otherUserName");
     logger.i("Other User Id: $otherUserId");
   }
@@ -49,11 +45,12 @@ class ChatScreenController extends GetxController {
   void initializeSocket() async {
     final token = await StorageService.getData("token");
     if (token == null || token.isEmpty) {
-      logger.e("❌ Token is NULL. Socket will fail auth.");
+      logger.e("❌ Token is NULL.");
       return;
     }
     socket = IO.io(
-      "http://192.168.1.16:3000",
+      "http://192.168.1.4:3000",
+      // "https://shiwang-chat-backend.onrender.com",
       IO.OptionBuilder()
           .setTransports(["websocket"])
           .disableAutoConnect()

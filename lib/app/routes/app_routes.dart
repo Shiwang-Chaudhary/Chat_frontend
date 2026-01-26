@@ -8,4 +8,5 @@ abstract class Routes {
   static const O_T_P_SCREEN = '/o-t-p-screen';
   static const PROFILE = '/profile';
   static const SEARCH_USER_SCREEN = '/search-user-screen';
+  static const CREATE_GROUP_SCREEN = '/create-group-screen';
 }

@@ -8,6 +8,8 @@ import '../modules/bottomNavBar/bindings/bottom_nav_bar_binding.dart';
 import '../modules/bottomNavBar/views/bottom_nav_bar_view.dart';
 import '../modules/chatScreen/bindings/chat_screen_binding.dart';
 import '../modules/chatScreen/views/chat_screen_view.dart';
+import '../modules/createGroupScreen/bindings/create_group_screen_binding.dart';
+import '../modules/createGroupScreen/views/create_group_screen_view.dart';
 import '../modules/groupChatScreen/bindings/group_chat_screen_binding.dart';
 import '../modules/groupChatScreen/views/group_chat_screen_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -68,6 +70,11 @@ class AppPages {
       name: Routes.SEARCH_USER_SCREEN,
       page: () => const SearchUserScreenView(),
       binding: SearchUserScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.CREATE_GROUP_SCREEN,
+      page: () => const CreateGroupScreenView(),
+      binding: CreateGroupScreenBinding(),
     ),
   ];
 }

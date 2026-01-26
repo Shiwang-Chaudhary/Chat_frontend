@@ -21,10 +21,6 @@ class SearchUserScreenView extends GetView<SearchUserScreenController> {
               SizedBox(
                 height: 100,
               ),
-              // ElevatedButton(onPressed: (){
-              //   // "696bcd0a3c31fd0257db79f2";
-              //   // controller.createOrGetChatRoom("696bcd0a3c31fd0257db79f2");
-              // }, child: CustomText(text: "TEST BUTTON")),
               TextField(
                 onChanged: (value) => controller.seachUsers(value),
                 style:
