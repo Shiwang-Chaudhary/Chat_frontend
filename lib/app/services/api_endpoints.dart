@@ -6,6 +6,7 @@ class ApiEndpoints{
   static String getMessage = "chat/getMessage"; //isme /chatid bhi dalni h end m
   static String getAllChats = "chat/getAllChats"; // "?isGroup=false" for personal chats and "?isGroup=true" for groupChats
   static String searchUsers = "chat/searchUsers";
-  static String createGroupChat = "chat/createGroupChats";
+  static String createGroupChat = "chat/createGroupChat";
   static String getGroupChats = "chat/getAllChats?isGroup=true";
+  static String searchGroups = "chat/searchGroups";
 }

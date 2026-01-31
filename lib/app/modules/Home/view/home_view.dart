@@ -59,18 +59,29 @@ class HomeView extends GetView<HomeController> {
                   Logger().i("OTHER USER :${otherUser}");
                   // log("OTHER USER name :${otherUser["name"]}");
                   // log("OTHER USER ID:${otherUser["_id"]}");
-                  return CustomTile(
-                    icon: Icons.chat,
-                    showSubtitle: true,
-                    text: CapitalizeService.capitalizeEachWord(otherUserName),
-                    ontap: () {
+                  return ListTile(
+                    leading: CircleAvatar(
+                      child: CustomText(
+                          text: CapitalizeService.capitalizeEachWord(
+                              otherUserName[0])),
+                    ),
+                    title: CustomText(
+                      text: CapitalizeService.capitalizeEachWord(otherUserName),
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                    onTap: () {
                       log("Tapped on Chat $otherUserName");
                       Get.to(
                         () => ChatScreenView(),
                         binding: BindingsBuilder(() {
                           Get.put(ChatScreenController());
                         }),
-                        arguments: {"otherUserId": otherUserId, "otherUserName":otherUserName,"chatId": chatId},
+                        arguments: {
+                          "otherUserId": otherUserId,
+                          "otherUserName": otherUserName,
+                          "chatId": chatId
+                        },
                       );
                     },
                   );
@@ -83,3 +94,13 @@ class HomeView extends GetView<HomeController> {
     );
   }
 }
+// ontap: () {
+//                       log("Tapped on Chat $otherUserName");
+//                       Get.to(
+//                         () => ChatScreenView(),
+//                         binding: BindingsBuilder(() {
+//                           Get.put(ChatScreenController());
+//                         }),
+//                         arguments: {"otherUserId": otherUserId, "otherUserName":otherUserName,"chatId": chatId},
+//                       );
+//                     },

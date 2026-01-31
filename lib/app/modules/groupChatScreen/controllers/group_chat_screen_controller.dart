@@ -1,3 +1,4 @@
+import 'package:chat_backend/app/routes/app_routes.dart';
 import 'package:chat_backend/app/services/api_endpoints.dart';
 import 'package:chat_backend/app/services/api_service.dart';
 import 'package:chat_backend/app/services/storage_service.dart';
@@ -16,8 +17,11 @@ class GroupChatScreenController extends GetxController {
     super.onInit();
     getGroupChats();
   }
-  void createGroupChat()async{
-    // final response = await ApiService.post(body, ApiEndpoints.createOrGetChatRoom);
+  void openCreateGroupScreen()async{
+    final result = await Get.toNamed(Routes.CREATE_GROUP_SCREEN);
+    if (result!=null) {
+      getGroupChats();
+    }
   }
   void getGroupChats()async{
     final token = await StorageService.getData("token");

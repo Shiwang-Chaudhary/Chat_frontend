@@ -9,4 +9,5 @@ abstract class Routes {
   static const PROFILE = '/profile';
   static const SEARCH_USER_SCREEN = '/search-user-screen';
   static const CREATE_GROUP_SCREEN = '/create-group-screen';
+  static const SEARCH_GROUP_SCREEN = '/search-group-screen';
 }

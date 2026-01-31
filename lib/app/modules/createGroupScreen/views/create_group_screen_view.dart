@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:chat_backend/app/services/capitalize_service.dart';
 import 'package:chat_backend/app/widgets/customText.dart';
 import 'package:flutter/material.dart';
@@ -54,8 +56,6 @@ class CreateGroupScreenView extends GetView<CreateGroupScreenController> {
               ),
             ),
 
-            // const Divider(),
-
             // 👥 Members Header
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -96,35 +96,34 @@ class CreateGroupScreenView extends GetView<CreateGroupScreenController> {
             SizedBox(height: 20,),
             // 👥 Members List
             Expanded(
-              child: Obx(() {
-                return ListView.builder(
+              child: Obx(() =>  ListView.builder(
                   itemCount: controller.searchedUsers.length,
                   itemBuilder: (context, index) {
                     final user = controller.searchedUsers[index];
-                    final userName = user["name"];
-                    // final userId = user["_id"];
-                    return ListTile(
-                      leading: CircleAvatar(
-                        child: CustomText(
-                            text: CapitalizeService.capitalizeEachWord(
-                                userName[0])),
-                      ),
-                      title: CustomText(
-                        text: CapitalizeService.capitalizeEachWord(userName),
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                      // trailing: Checkbox(
-                      //   value: true,
-                      //   onChanged: (_) =>
-                      //       controller.toggleUserSelection(index),
-                      // ),
-                      // onTap: () =>
-                      //     controller.toggleUserSelection(index),
-                    );
+                    final String userName = user["name"];
+                    final String userId = user["_id"];
+                    controller.logger.i("isSelected:${controller.selectedMembersId.contains(userId)}");
+                    return Obx(() => ListTile(
+                          leading: CircleAvatar(
+                            child: CustomText(
+                                text: CapitalizeService.capitalizeEachWord(
+                                    userName[0])),
+                          ),
+                          title: CustomText(
+                            text: CapitalizeService.capitalizeEachWord(userName),
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                          trailing: Checkbox(
+                            value: controller.selectedMembersId.contains(userId),
+                            onChanged: (_) =>
+                                controller.toggleUserSelection(userId),
+                          ),
+                          // onTap: () =>
+                          //     controller.toggleUserSelection(userId),
+                        ));
                   },
-                );
-              }),
+                ),)
             ),
 
             // 🔵 Create Button
@@ -134,7 +133,9 @@ class CreateGroupScreenView extends GetView<CreateGroupScreenController> {
                   width: double.infinity,
                   height: 48,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      controller.createGroup();
+                    },
                     child: const Text("Create Group"),
                   )),
             ),

@@ -26,14 +26,17 @@ class GroupChatScreenView extends GetView<GroupChatScreenController> {
       backgroundColor: const Color(0xFF24243E),
       body: Column(
         children: [
-          ElevatedButton(onPressed: (){
-            controller.getGroupChats();
-          }, child: CustomText(text: "TEST BUTTON")),
+          // ElevatedButton(onPressed: (){
+          //   controller.getGroupChats();
+          // }, child: CustomText(text: "TEST BUTTON")),
           CustomTextfield(
-              controller: controller.searchGrpController,
-              prefixIcon: Icons.search,
-              showSuffixIcon: false,
-              hintText: "Search group chats"),
+            controller: TextEditingController(),
+            prefixIcon: Icons.search,
+            showSuffixIcon: false,
+            hintText: "Search group chats",
+            readOnly: true,
+            onTap: () => Get.toNamed(Routes.SEARCH_GROUP_SCREEN),
+          ),
           SizedBox(
             height: 10,
           ),
@@ -57,7 +60,7 @@ class GroupChatScreenView extends GetView<GroupChatScreenController> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.toNamed(Routes.CREATE_GROUP_SCREEN);
+          controller.openCreateGroupScreen();
         },
         backgroundColor: Colors.blue,
         child: const Icon(Icons.group_add,color: Colors.white,),

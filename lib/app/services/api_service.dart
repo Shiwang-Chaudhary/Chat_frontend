@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 
 class ApiService {
   static const baseUrl =
@@ -10,6 +11,7 @@ class ApiService {
   //We use {String? token} so that during function call, ApiService.post(body,"chat/",{"token":token})
   static Future post(Map body, String endpoints, {String? token}) async {
     try {
+      final logger = Logger();
       final url = "$baseUrl/$endpoints";
       final uri = Uri.parse(url);
       final response = await http.post(
@@ -20,7 +22,7 @@ class ApiService {
         },
         body: jsonEncode(body),
       );
-      log("Status code: ${response.statusCode}");
+      logger.i("Status code: ${response.statusCode}");
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = jsonDecode(response.body);
         return data;

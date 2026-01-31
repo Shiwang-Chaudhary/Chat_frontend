@@ -16,6 +16,8 @@ import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
+import '../modules/searchGroupScreen/bindings/search_group_screen_binding.dart';
+import '../modules/searchGroupScreen/views/search_group_screen_view.dart';
 import '../modules/searchUserScreen/bindings/search_user_screen_binding.dart';
 import '../modules/searchUserScreen/views/search_user_screen_view.dart';
 import '../modules/signUp/bindings/sign_up_binding.dart';
@@ -75,6 +77,11 @@ class AppPages {
       name: Routes.CREATE_GROUP_SCREEN,
       page: () => const CreateGroupScreenView(),
       binding: CreateGroupScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.SEARCH_GROUP_SCREEN,
+      page: () => const SearchGroupScreenView(),
+      binding: SearchGroupScreenBinding(),
     ),
   ];
 }
