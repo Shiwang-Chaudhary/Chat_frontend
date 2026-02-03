@@ -79,7 +79,7 @@ class SearchGroupScreenView extends GetView<SearchGroupScreenController> {
                                     CapitalizeService.capitalizeEachWord(name),
                                 //trailing: Icons.message,
                                 ontap: () {
-                                  Get.offAndToNamed(Routes.GROUP_CHAT_SCREEN);
+                                  Get.offAndToNamed(Routes.GRP_MESSAGE_SCREEN);
                                 });
                           },
                         ),

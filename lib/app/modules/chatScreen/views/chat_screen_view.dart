@@ -53,18 +53,14 @@ class ChatScreenView extends GetView<ChatScreenController> {
                       itemCount: controller.messages.length,
                       itemBuilder: (context, index) {
                         final Map data = controller.messages[index];
-
                         final String message = data["content"] ?? "";
                         final Map sender = data["sender"];
                         final String senderId = sender["_id"];
-
                         final bool isMe = senderId == controller.loggedUserId;
-
                         final String createdAt = data["createdAt"];
                         final String dateTime = controller.formatDateTime(
                           createdAt,
                         );
-
                         return Align(
                           alignment: isMe
                               ? Alignment.centerRight

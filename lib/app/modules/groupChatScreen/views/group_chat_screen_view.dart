@@ -1,3 +1,5 @@
+import 'package:chat_backend/app/modules/grpMessageScreen/controllers/grp_message_screen_controller.dart';
+import 'package:chat_backend/app/modules/grpMessageScreen/views/grp_message_screen_view.dart';
 import 'package:chat_backend/app/routes/app_routes.dart';
 import 'package:chat_backend/app/widgets/customText.dart';
 import 'package:chat_backend/app/widgets/customTextfield.dart';
@@ -45,16 +47,31 @@ class GroupChatScreenView extends GetView<GroupChatScreenController> {
               child: ListView.builder(
                   itemCount: controller.groups.length,
                   itemBuilder: (context, index) {
-                    final logger = Logger();
+                    // final logger = Logger();
                      final group = controller.groups[index];
+                    // logger.i("GROUP : $group");
                      final groupName = group["name"];
-                    logger.i("GROUP NAME: $groupName");
+                    // logger.i("GROUP NAME: $groupName");
                      final adminName = group["admin"]["name"];
-                    logger.i("ADMIN NAME: $adminName");
+                    // logger.i("ADMIN NAME: $adminName");
+                    final chatId = group["_id"];
+                    final members = group["members"];
                     return CustomTile(
                         icon: Icons.chat,
                         text: groupName,
-                        ontap: () {});
+                        ontap: () {
+                          Get.to(
+                            ()=> GrpMessageScreenView(),
+                            binding: BindingsBuilder(() {
+                              Get.put(GrpMessageScreenController());
+                            }),
+                            arguments: {
+                              "groupName" : groupName,
+                              "chatId" : chatId,
+                              "members" : members
+                            }
+                          );
+                        });
                   })))
         ],
       ),

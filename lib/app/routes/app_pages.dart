@@ -12,6 +12,8 @@ import '../modules/createGroupScreen/bindings/create_group_screen_binding.dart';
 import '../modules/createGroupScreen/views/create_group_screen_view.dart';
 import '../modules/groupChatScreen/bindings/group_chat_screen_binding.dart';
 import '../modules/groupChatScreen/views/group_chat_screen_view.dart';
+import '../modules/grpMessageScreen/bindings/grp_message_screen_binding.dart';
+import '../modules/grpMessageScreen/views/grp_message_screen_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
@@ -82,6 +84,11 @@ class AppPages {
       name: Routes.SEARCH_GROUP_SCREEN,
       page: () => const SearchGroupScreenView(),
       binding: SearchGroupScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.GRP_MESSAGE_SCREEN,
+      page: () => const GrpMessageScreenView(),
+      binding: GrpMessageScreenBinding(),
     ),
   ];
 }

@@ -49,6 +49,11 @@ class CreateGroupScreenView extends GetView<CreateGroupScreenController> {
                         hintText: "Group name",
                         hintStyle: TextStyle(color: Colors.white),
                         border: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue
+                          )
+                        )
                       ),
                     ),
                   ),
@@ -82,12 +87,12 @@ class CreateGroupScreenView extends GetView<CreateGroupScreenController> {
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(4),
-                  borderSide: const BorderSide(color: Colors.black, width: 1),
+                  borderSide: const BorderSide(color: Colors.white, width: 1),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(4),
                   borderSide: BorderSide(
-                    color: Colors.grey.shade400, // 👈 tapped
+                    color: Colors.blue.shade400, // 👈 tapped
                     width: 1,
                   ),
                 ),
@@ -105,6 +110,7 @@ class CreateGroupScreenView extends GetView<CreateGroupScreenController> {
                     controller.logger.i("isSelected:${controller.selectedMembersId.contains(userId)}");
                     return Obx(() => ListTile(
                           leading: CircleAvatar(
+                            backgroundColor: Colors.blue,
                             child: CustomText(
                                 text: CapitalizeService.capitalizeEachWord(
                                     userName[0])),
@@ -115,12 +121,13 @@ class CreateGroupScreenView extends GetView<CreateGroupScreenController> {
                             size: 20,
                           ),
                           trailing: Checkbox(
+                            activeColor: Colors.blue,
                             value: controller.selectedMembersId.contains(userId),
                             onChanged: (_) =>
                                 controller.toggleUserSelection(userId),
                           ),
-                          // onTap: () =>
-                          //     controller.toggleUserSelection(userId),
+                          onTap: () =>
+                              controller.toggleUserSelection(userId),
                         ));
                   },
                 ),)
@@ -136,7 +143,7 @@ class CreateGroupScreenView extends GetView<CreateGroupScreenController> {
                     onPressed: () {
                       controller.createGroup();
                     },
-                    child: const Text("Create Group"),
+                    child: const CustomText(text:"Create Group",color: Colors.blue,),
                   )),
             ),
           ],

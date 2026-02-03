@@ -27,9 +27,9 @@ class ChatScreenController extends GetxController {
     otherUserName = Get.arguments["otherUserName"];
     initializeSocket();
     getMessages();
-    logger.i("ChatId: $chatId");
-    logger.i("Other User Id: $otherUserName");
-    logger.i("Other User Id: $otherUserId");
+    // logger.i("ChatId: $chatId");
+    // logger.i("Other User Id: $otherUserName");
+    // logger.i("Other User Id: $otherUserId");
   }
 
   @override
@@ -63,6 +63,7 @@ class ChatScreenController extends GetxController {
       logger.d("Socket connected: ${socket.id}");
       socket.emit("joinroom", chatId);
     });
+
     socket.on("receiveMessage", (data) {
       final Map<String, dynamic> map = Map<String, dynamic>.from(
         data,
@@ -70,6 +71,7 @@ class ChatScreenController extends GetxController {
       messages.add(map);
       logger.i("New message received: $data");
     });
+
     socket.onDisconnect((_) {
       logger.w("❌ Socket disconnected");
     });
@@ -100,10 +102,9 @@ class ChatScreenController extends GetxController {
     messages.clear(); //SO THAT OLD MESSAGES ARE REMOVED BEFORE ADDING NEW ONES
     messages.addAll(messageList.cast<Map<String, dynamic>>());
 
-    log("MESSAGES LOADED: ${messages.length}");
+    logger.i("MESSAGES LOADED: ${messages.length}");
   }
 
-  void searchUsers() async {}
   String formatDateTime(String isoTime) {
     final DateTime dateTime = DateTime.parse(isoTime).toLocal();
     final int day = dateTime.day;
@@ -121,21 +122,21 @@ class ChatScreenController extends GetxController {
     return "$day/$month/$year  $formattedHour:$formattedMinute $period";
   }
 
-  String formatTime(String isoTime) {
-    final DateTime dateTime = DateTime.parse(isoTime).toLocal();
+  // String formatTime(String isoTime) {
+  //   final DateTime dateTime = DateTime.parse(isoTime).toLocal();
 
-    final int hour = dateTime.hour;
-    final int minute = dateTime.minute;
+  //   final int hour = dateTime.hour;
+  //   final int minute = dateTime.minute;
 
-    final String period = hour >= 12 ? "PM" : "AM";
-    final int formattedHour = hour == 0
-        ? 12
-        : hour > 12
-            ? hour - 12
-            : hour;
+  //   final String period = hour >= 12 ? "PM" : "AM";
+  //   final int formattedHour = hour == 0
+  //       ? 12
+  //       : hour > 12
+  //           ? hour - 12
+  //           : hour;
 
-    final String formattedMinute = minute.toString().padLeft(2, '0');
+  //   final String formattedMinute = minute.toString().padLeft(2, '0');
 
-    return "$formattedHour:$formattedMinute $period";
-  }
+  //   return "$formattedHour:$formattedMinute $period";
+  // }
 }

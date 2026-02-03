@@ -29,7 +29,7 @@ class CustomText extends StatelessWidget {
           letterSpacing: 1,
           fontSize: size ?? 16,
           fontWeight: weight ?? FontWeight.w400,
-          color: color ?? Colors.black,
+          color: color ?? Colors.white,
       ));
   }
 }

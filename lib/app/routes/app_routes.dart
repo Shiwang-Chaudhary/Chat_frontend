@@ -10,4 +10,5 @@ abstract class Routes {
   static const SEARCH_USER_SCREEN = '/search-user-screen';
   static const CREATE_GROUP_SCREEN = '/create-group-screen';
   static const SEARCH_GROUP_SCREEN = '/search-group-screen';
+  static const GRP_MESSAGE_SCREEN = '/grp-message-screen';
 }
