@@ -23,9 +23,7 @@ class GrpMessageScreenView extends GetView<GrpMessageScreenController> {
             //   controller.getMessages();
             // }, child: CustomText(text: "TEST BUTTON")),
             CustomText(
-              text: CapitalizeService.capitalizeEachWord(
-                controller.groupName,
-              ),
+              text: CapitalizeService.capitalizeEachWord(controller.groupName),
               size: 20,
               color: Colors.white,
             ),
@@ -41,31 +39,38 @@ class GrpMessageScreenView extends GetView<GrpMessageScreenController> {
       body: Column(
         children: [
           Expanded(
-            child: Obx(() => 
-             ListView.builder(
-              itemCount: controller.messages.length,
-              itemBuilder: (context, index) {
-                final data = controller.messages[index];
-                final message = data["content"];
-                final senderId = data["sender"]["_id"];
-                final senderName = data["sender"]["name"];
-                final createdAt = data["createdAt"];
-                final dateTime = controller.formatDateTime(createdAt);
-                controller.logger.i("Data LIST:$data");
-                controller.logger.i("SENDER NAME:$senderName");
-                final bool isMe = senderId == controller.loggedUserId;
-                return Align(
-                  alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-                  child: MessageContainer(
-                      isMe: isMe, otherName: senderName,message: message, dateTime: dateTime),
-                );
-              },
-            ),)
+            child: Obx(
+              () => ListView.builder(
+                itemCount: controller.messages.length,
+                itemBuilder: (context, index) {
+                  final data = controller.messages[index];
+                  final message = data["content"];
+                  final senderId = data["sender"]["_id"];
+                  final senderName = data["sender"]["name"];
+                  final createdAt = data["createdAt"];
+                  final dateTime = controller.formatDateTime(createdAt);
+                  controller.logger.i("Data LIST:$data");
+                  controller.logger.i("SENDER NAME:$senderName");
+                  final bool isMe = senderId == controller.loggedUserId;
+                  return Align(
+                    alignment: isMe
+                        ? Alignment.centerRight
+                        : Alignment.centerLeft,
+                    child: MessageContainer(
+                      isFile: false,
+                      isMe: isMe,
+                      otherName: senderName,
+                      message: message,
+                      dateTime: dateTime,
+                    ),
+                  );
+                },
+              ),
+            ),
           ),
           MessageTextfield(controller: controller),
         ],
       ),
-      
     );
   }
 }

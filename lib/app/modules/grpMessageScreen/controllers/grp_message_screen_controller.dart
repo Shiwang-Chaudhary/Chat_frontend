@@ -51,12 +51,13 @@ class GrpMessageScreenController extends GetxController {
         return logger.e("❌ Token is NULL.");
       }
       socket = IO.io(
-          "http://192.168.1.4:3000",
-          IO.OptionBuilder()
-              .setTransports(["websocket"])
-              .disableAutoConnect()
-              .setAuth({"token": token.replaceAll("Bearer ", "")})
-              .build());
+        "http://192.168.1.10:3000",
+        IO.OptionBuilder()
+            .setTransports(["websocket"])
+            .disableAutoConnect()
+            .setAuth({"token": token.replaceAll("Bearer ", "")})
+            .build(),
+      );
       socket.connect();
 
       socket.onConnect((_) {
@@ -65,8 +66,9 @@ class GrpMessageScreenController extends GetxController {
       });
 
       socket.on("receiveMessage", (data) {
-        final Map<String, dynamic> receivedMessage =
-            Map<String, dynamic>.from(data);
+        final Map<String, dynamic> receivedMessage = Map<String, dynamic>.from(
+          data,
+        );
         messages.add(receivedMessage);
         logger.i("RECEIVED MESSAGE: $messages");
       });
@@ -121,8 +123,10 @@ class GrpMessageScreenController extends GetxController {
       isPageLoading.value = true;
       loggedUserId = await StorageService.getData("id");
       final token = await StorageService.getData("token");
-      final body =
-          await ApiService.get("${ApiEndpoints.getMessage}/$chatId", token);
+      final body = await ApiService.get(
+        "${ApiEndpoints.getMessage}/$chatId",
+        token,
+      );
       final List<Map<String, dynamic>> messageList =
           List<Map<String, dynamic>>.from(body["data"]);
       logger.i("GetMessage data: $messageList");
@@ -132,7 +136,7 @@ class GrpMessageScreenController extends GetxController {
     } catch (e) {
       logger.e("Error in getting message:${e.toString()}");
     } finally {
-        isPageLoading.value = false;
+      isPageLoading.value = false;
     }
   }
 
@@ -147,8 +151,8 @@ class GrpMessageScreenController extends GetxController {
     final int formattedHour = hour == 0
         ? 12
         : hour > 12
-            ? hour - 12
-            : hour;
+        ? hour - 12
+        : hour;
     final String formattedMinute = minute.toString().padLeft(2, '0');
     return "$day/$month/$year  $formattedHour:$formattedMinute $period";
   }

@@ -58,17 +58,32 @@ class ChatScreenView extends GetView<ChatScreenController> {
                         final String senderId = sender["_id"];
                         final bool isMe = senderId == controller.loggedUserId;
                         final String createdAt = data["createdAt"];
+                        final String fileType = data["messageType"] ?? "text";
+                        final String fileUrl = data["fileUrl"] ?? "";
+                        final String videoThumbnailUrl = fileUrl.replaceAll(
+                          ".mp4",
+                          ".jpeg",
+                        );
+                        final String fileName = data["fileName"] ?? "";
                         final String dateTime = controller.formatDateTime(
                           createdAt,
+                        );
+                        controller.logger.i("MESSAGE : $message");
+                        controller.logger.i(
+                          "THumbnail URL: $videoThumbnailUrl",
                         );
                         return Align(
                           alignment: isMe
                               ? Alignment.centerRight
                               : Alignment.centerLeft,
                           child: MessageContainer(
+                            isFile: true,
                             isMe: isMe,
                             message: message,
-                            dateTime: dateTime, // 👈 date + time shown here
+                            dateTime: dateTime,
+                            fileType: fileType,
+                            fileUrl: fileUrl,
+                            videoThumbnailUrl: videoThumbnailUrl,
                           ),
                         );
                       },

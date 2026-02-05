@@ -7,38 +7,71 @@ class MessageTextfield extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            color: const Color(0xFF24243E),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: controller.messageController,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      hintText: "Type a message...",
-                      hintStyle: TextStyle(color: Colors.grey.shade400),
-                      filled: true,
-                      fillColor: const Color(0xFF2B2B49),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25),
-                        borderSide: BorderSide.none,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      color: const Color(0xFF24243E),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: controller.messageController,
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                hintText: "Type a message...",
+                hintStyle: TextStyle(color: Colors.grey.shade400),
+                filled: true,
+                fillColor: const Color(0xFF2B2B49),
+
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25),
+                  borderSide: BorderSide.none,
+                ),
+
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+                suffixIcon: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      icon: const Icon(
+                        Icons.camera_alt,
+                        color: Colors.white,
+                        size: 20,
                       ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 10),
+                      onPressed: () {
+                        controller.pickAndSendImage();
+                      },
                     ),
-                  ),
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      icon: const Icon(
+                        Icons.attach_file,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                      onPressed: () {
+                        controller.pickAndSendFileOrFiles();
+                      },
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 8),
-                CircleAvatar(
-                  backgroundColor: Colors.blueAccent,
-                  child: IconButton(
-                    icon: const Icon(Icons.send, color: Colors.white),
-                    onPressed: controller.sendMessage,
-                  ),
-                ),
-              ],
+              ),
             ),
-          );
+          ),
+
+          const SizedBox(width: 8),
+
+          CircleAvatar(
+            backgroundColor: Colors.blueAccent,
+            child: IconButton(
+              icon: const Icon(Icons.send, color: Colors.white),
+              onPressed: controller.sendTextMessage,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

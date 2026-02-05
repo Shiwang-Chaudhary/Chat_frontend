@@ -1,4 +1,8 @@
+import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
+import 'package:chat_backend/app/services/cloudinary_service.dart';
+import 'package:chat_backend/app/services/filePicker_service.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:chat_backend/app/services/api_endpoints.dart';
 import 'package:chat_backend/app/services/api_service.dart';
@@ -17,6 +21,8 @@ class ChatScreenController extends GetxController {
   var logger = Logger();
   final RxList messages = [].obs;
   late final IO.Socket socket;
+  CloudinaryService cloudinaryService = CloudinaryService();
+  FilePickerService filePickerService = FilePickerService();
 
   @override
   void onInit() {
@@ -49,7 +55,7 @@ class ChatScreenController extends GetxController {
       return;
     }
     socket = IO.io(
-      "http://192.168.1.4:3000",
+      "http://192.168.1.10:3000",
       // "https://shiwang-chat-backend.onrender.com",
       IO.OptionBuilder()
           .setTransports(["websocket"])
@@ -65,9 +71,7 @@ class ChatScreenController extends GetxController {
     });
 
     socket.on("receiveMessage", (data) {
-      final Map<String, dynamic> map = Map<String, dynamic>.from(
-        data,
-      );
+      final Map<String, dynamic> map = Map<String, dynamic>.from(data);
       messages.add(map);
       logger.i("New message received: $data");
     });
@@ -81,12 +85,91 @@ class ChatScreenController extends GetxController {
     });
   }
 
-  void sendMessage() async {
-    logger.d("Send message called");
-    if (messageController.text.trim().isEmpty) return;
-    final msg = {"chatId": chatId, "text": messageController.text.trim()};
+  void sendSocketMessage({
+    String? chatId,
+    String? messageType = "text",
+    String? text,
+    String? fileName,
+    String? fileUrl,
+    int? fileSize,
+  }) {
+    final msg = {
+      "chatId": chatId ?? this.chatId,
+      "text": text,
+      "fileName": fileName,
+      "fileUrl": fileUrl,
+      "messageType": messageType,
+      "fileSize": fileSize,
+    };
     socket.emit("sendMessage", msg);
     messageController.clear();
+  }
+
+  void sendTextMessage() async {
+    try {
+      logger.d("Send message called");
+      if (messageController.text.trim().isEmpty) return;
+      final msg = {"chatId": chatId, "text": messageController.text.trim()};
+      socket.emit("sendMessage", msg);
+      messageController.clear();
+    } catch (e) {
+      logger.e("Error sending message: ${e.toString()}");
+    }
+  }
+
+  void pickAndSendFileOrFiles() async {
+    try {
+      final List<File>? files = await filePickerService.pickMultipleFiles();
+      if (files == null || files.isEmpty) return;
+      if (files.length == 1) {
+        logger.i("Uploading single file...");
+        final singleFile = files.first;
+        String fileUrl = await cloudinaryService.uploadFile(singleFile);
+        final fileName = singleFile.path.split("/").last;
+        final fileSize = await singleFile.length();
+        sendSocketMessage(
+          messageType: "file",
+          fileName: fileName,
+          fileUrl: fileUrl,
+          fileSize: fileSize,
+        );
+      } else {
+        logger.i("Uploading multiple files...");
+        for (var file in files) {
+          final String fileUrl = await cloudinaryService.uploadFile(file);
+          final fileName = file.path.split("/").last;
+          final fileSize = await file.length();
+          sendSocketMessage(
+            messageType: "file",
+            fileName: fileName,
+            fileUrl: fileUrl,
+            fileSize: fileSize,
+          );
+        }
+      }
+    } catch (e) {
+      logger.e("Error in picking or sending file(s): ${e.toString()}");
+      Get.snackbar("File error", "Failed to send file(s). Please try again.");
+    }
+  }
+
+  void pickAndSendImage() async {
+    try {
+      final image = await filePickerService.pickImage();
+      if (image == null) return;
+      String imageUrl = await cloudinaryService.uploadFile(image);
+      final fileName = image.path.split("/").last;
+      final fileSize = await image.length();
+      sendSocketMessage(
+        messageType: "image",
+        fileName: fileName,
+        fileUrl: imageUrl,
+        fileSize: fileSize,
+      );
+    } catch (e) {
+      logger.e("Error in picking or sending image: ${e.toString()}");
+      Get.snackbar("Image error", "Failed to send image. Please try again.");
+    }
   }
 
   void getMessages() async {
@@ -98,7 +181,7 @@ class ChatScreenController extends GetxController {
     );
 
     final List messageList = response["data"];
-    logger.i("Fetched Messages: $messageList");
+    logger.i("Fetched Messages: ${jsonEncode(messageList)}");
     messages.clear(); //SO THAT OLD MESSAGES ARE REMOVED BEFORE ADDING NEW ONES
     messages.addAll(messageList.cast<Map<String, dynamic>>());
 
@@ -116,27 +199,9 @@ class ChatScreenController extends GetxController {
     final int formattedHour = hour == 0
         ? 12
         : hour > 12
-            ? hour - 12
-            : hour;
+        ? hour - 12
+        : hour;
     final String formattedMinute = minute.toString().padLeft(2, '0');
     return "$day/$month/$year  $formattedHour:$formattedMinute $period";
   }
-
-  // String formatTime(String isoTime) {
-  //   final DateTime dateTime = DateTime.parse(isoTime).toLocal();
-
-  //   final int hour = dateTime.hour;
-  //   final int minute = dateTime.minute;
-
-  //   final String period = hour >= 12 ? "PM" : "AM";
-  //   final int formattedHour = hour == 0
-  //       ? 12
-  //       : hour > 12
-  //           ? hour - 12
-  //           : hour;
-
-  //   final String formattedMinute = minute.toString().padLeft(2, '0');
-
-  //   return "$formattedHour:$formattedMinute $period";
-  // }
 }

@@ -2,8 +2,12 @@ import 'package:get/get.dart';
 
 import '../modules/Home/bindings/home_binding.dart';
 import '../modules/Home/view/home_view.dart';
+import '../modules/ImageOpenScreen/bindings/image_open_screen_binding.dart';
+import '../modules/ImageOpenScreen/views/image_open_screen_view.dart';
 import '../modules/OTP_screen/bindings/o_t_p_screen_binding.dart';
 import '../modules/OTP_screen/views/o_t_p_screen_view.dart';
+import '../modules/VideoOpenScreen/bindings/video_open_screen_binding.dart';
+import '../modules/VideoOpenScreen/views/video_open_screen_view.dart';
 import '../modules/bottomNavBar/bindings/bottom_nav_bar_binding.dart';
 import '../modules/bottomNavBar/views/bottom_nav_bar_view.dart';
 import '../modules/chatScreen/bindings/chat_screen_binding.dart';
@@ -89,6 +93,16 @@ class AppPages {
       name: Routes.GRP_MESSAGE_SCREEN,
       page: () => const GrpMessageScreenView(),
       binding: GrpMessageScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.IMAGE_OPEN_SCREEN,
+      page: () => const ImageOpenScreenView(),
+      binding: ImageOpenScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.VIDEO_OPEN_SCREEN,
+      page: () => const VideoOpenScreenView(),
+      binding: VideoOpenScreenBinding(),
     ),
   ];
 }
