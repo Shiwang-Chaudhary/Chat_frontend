@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -24,7 +23,7 @@ class CustomTextfield extends StatelessWidget {
     this.isPasswordVisible = false,
     this.onTogglePasswordVisibility,
     this.onTap,
-    this.readOnly
+    this.readOnly,
   });
 
   @override
@@ -35,7 +34,10 @@ class CustomTextfield extends StatelessWidget {
       controller: controller,
       obscureText: isPassword ? !isPasswordVisible : false,
       style: GoogleFonts.outfit(
-          fontSize: 16, fontWeight: FontWeight.w400, color: Colors.black),
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+        color: Colors.black,
+      ),
       decoration: InputDecoration(
         suffixIcon: showSuffixIcon
             ? IconButton(
@@ -55,15 +57,20 @@ class CustomTextfield extends StatelessWidget {
         ),
         hintText: hintText,
         hintStyle: GoogleFonts.outfit(
-            fontSize: 16, color: Color.fromRGBO(102, 102, 102, 1)),
+          fontSize: 16,
+          color: Color.fromRGBO(102, 102, 102, 1),
+        ),
         enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey),
-            borderRadius: BorderRadius.all(Radius.circular(6))),
+          borderSide: BorderSide(color: Colors.grey),
+          borderRadius: BorderRadius.all(Radius.circular(6)),
+        ),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
         filled: true,
         fillColor: Colors.white,
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 20,
+          horizontal: 20,
+        ),
       ),
     );
   }

@@ -5,7 +5,6 @@ import 'package:chat_backend/app/services/api_service.dart';
 import 'package:chat_backend/app/services/storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 
 //token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NmJiYmU4M2MzMWZkMDI1N2RiNzljMyIsImVtYWlsIjoic2hpd2FuZ0BnbWFpbC5jb20iLCJpYXQiOjE3Njg2NzA3OTYsImV4cCI6MTc3MTI2Mjc5Nn0.kyPN8lQ9yvffEjF3TWgEbmlLRdMpq0dwhTeIguYwlHY";
 class HomeController extends GetxController {
@@ -20,12 +19,14 @@ class HomeController extends GetxController {
     getLoggedUserId();
     getChats();
   }
+
   @override
   void onClose() {
     // TODO: implement onClose
     searchController.dispose();
     super.onClose();
   }
+
   void getLoggedUserId() async {
     loggedUserId = await StorageService.getData("id");
   }
@@ -33,10 +34,7 @@ class HomeController extends GetxController {
   void getChats() async {
     final token = await StorageService.getData("token");
     log("LOGGED USER ID :$loggedUserId");
-    final Map response = await ApiService.get(
-      ApiEndpoints.getAllChats,
-      token,
-    );
+    final Map response = await ApiService.get(ApiEndpoints.getAllChats, token);
     final data = response["data"];
     chats.assignAll(data);
     for (var chat in data) {

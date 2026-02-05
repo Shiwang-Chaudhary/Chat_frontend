@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import '../controllers/search_group_screen_controller.dart';
 
 class SearchGroupScreenView extends GetView<SearchGroupScreenController> {
-  const SearchGroupScreenView({Key? key}) : super(key: key);
+  const SearchGroupScreenView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,9 +22,7 @@ class SearchGroupScreenView extends GetView<SearchGroupScreenController> {
               // ElevatedButton(onPressed: (){
               //    controller.searchGrpController
               // }, child: Text("TEST BUTTON")),
-              SizedBox(
-                height: 50,
-              ),
+              SizedBox(height: 50),
               TextField(
                 onChanged: (value) => controller.searchGroups(value),
                 style: const TextStyle(color: Colors.white),
@@ -40,7 +38,9 @@ class SearchGroupScreenView extends GetView<SearchGroupScreenController> {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
                     borderSide: const BorderSide(
-                        color: Colors.blue, width: 1), // 👈 normal
+                      color: Colors.blue,
+                      width: 1,
+                    ), // 👈 normal
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
@@ -51,9 +51,7 @@ class SearchGroupScreenView extends GetView<SearchGroupScreenController> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
+              SizedBox(height: 20),
               Obx(
                 () => Expanded(
                   child: controller.groups.isEmpty
@@ -73,14 +71,14 @@ class SearchGroupScreenView extends GetView<SearchGroupScreenController> {
                             final userId = group["_id"];
 
                             return CustomTile(
-                                showSubtitle: false,
-                                icon: Icons.message,
-                                text:
-                                    CapitalizeService.capitalizeEachWord(name),
-                                //trailing: Icons.message,
-                                ontap: () {
-                                  Get.offAndToNamed(Routes.GRP_MESSAGE_SCREEN);
-                                });
+                              showSubtitle: false,
+                              icon: Icons.message,
+                              text: CapitalizeService.capitalizeEachWord(name),
+                              //trailing: Icons.message,
+                              ontap: () {
+                                Get.offAndToNamed(Routes.GRP_MESSAGE_SCREEN);
+                              },
+                            );
                           },
                         ),
                 ),

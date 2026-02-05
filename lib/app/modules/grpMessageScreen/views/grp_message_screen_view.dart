@@ -5,7 +5,6 @@ import 'package:chat_backend/app/widgets/messageTextfield.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 
 import '../controllers/grp_message_screen_controller.dart';
 
@@ -52,16 +51,30 @@ class GrpMessageScreenView extends GetView<GrpMessageScreenController> {
                   controller.logger.i("Data LIST:$data");
                   controller.logger.i("SENDER NAME:$senderName");
                   final bool isMe = senderId == controller.loggedUserId;
+                  final fileType = data["messageType"];
+                  final fileUrl = data["fileUrl"];
+                  final fileName = data["fileName"];
+                  final fileSize = data["fileSize"];
+                  final String videoThumbnailUrl = fileUrl.replaceAll(
+                    RegExp(r'\.(mp4|mov|pdf|doc|docx)$'),
+                    ".jpeg",
+                  );
+                  controller.logger.i("fileType :$fileType");
                   return Align(
                     alignment: isMe
                         ? Alignment.centerRight
                         : Alignment.centerLeft,
                     child: MessageContainer(
-                      isFile: false,
+                      isFile: true,
                       isMe: isMe,
                       otherName: senderName,
                       message: message,
                       dateTime: dateTime,
+                      fileType: fileType,
+                      fileUrl: fileUrl,
+                      fileName: fileName,
+                      fileSize: fileSize,
+                      videoThumbnailUrl: videoThumbnailUrl,
                     ),
                   );
                 },

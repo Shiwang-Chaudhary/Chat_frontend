@@ -1,6 +1,4 @@
-import 'package:chat_backend/app/modules/signUp/controllers/sign_up_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PassTextfield extends StatelessWidget {
@@ -8,12 +6,13 @@ class PassTextfield extends StatelessWidget {
   final VoidCallback togglePasswordVisibility;
   final bool obscureText;
   final IconData suffixIcon;
-  const PassTextfield(
-      {super.key,
-      required this.controller,
-      required this.togglePasswordVisibility,
-      required this.obscureText,
-      required this.suffixIcon});
+  const PassTextfield({
+    super.key,
+    required this.controller,
+    required this.togglePasswordVisibility,
+    required this.obscureText,
+    required this.suffixIcon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,19 +41,19 @@ class PassTextfield extends StatelessWidget {
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(7)),
         fillColor: Colors.white,
         focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black, width: 2),
-            borderRadius: BorderRadius.circular(7)),
-        contentPadding: EdgeInsets.symmetric(
-          vertical: 20,
-          horizontal: 20,
+          borderSide: BorderSide(color: Colors.black, width: 2),
+          borderRadius: BorderRadius.circular(7),
         ),
+        contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         suffixIcon: GestureDetector(
           onTap: togglePasswordVisibility,
-          child: Icon(size: 20, suffixIcon
-              // signUpController.isPasswordVisible.value
-              //     ? Icons.visibility_off
-              //     : Icons.visibility,
-              ),
+          child: Icon(
+            size: 20,
+            suffixIcon,
+            // signUpController.isPasswordVisible.value
+            //     ? Icons.visibility_off
+            //     : Icons.visibility,
+          ),
         ),
       ),
     );

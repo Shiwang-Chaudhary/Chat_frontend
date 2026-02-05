@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:chat_backend/app/services/cloudinary_service.dart';
 import 'package:chat_backend/app/services/filePicker_service.dart';
@@ -55,7 +54,7 @@ class ChatScreenController extends GetxController {
       return;
     }
     socket = IO.io(
-      "http://192.168.1.10:3000",
+      "http://192.168.1.6:3000",
       // "https://shiwang-chat-backend.onrender.com",
       IO.OptionBuilder()
           .setTransports(["websocket"])
@@ -98,7 +97,7 @@ class ChatScreenController extends GetxController {
       "text": text,
       "fileName": fileName,
       "fileUrl": fileUrl,
-      "messageType": messageType,
+      "messageType": FilePickerService().getMessageType(fileName ?? ""),
       "fileSize": fileSize,
     };
     socket.emit("sendMessage", msg);
@@ -128,7 +127,7 @@ class ChatScreenController extends GetxController {
         final fileName = singleFile.path.split("/").last;
         final fileSize = await singleFile.length();
         sendSocketMessage(
-          messageType: "file",
+          messageType: filePickerService.getMessageType(fileName),
           fileName: fileName,
           fileUrl: fileUrl,
           fileSize: fileSize,
@@ -140,7 +139,7 @@ class ChatScreenController extends GetxController {
           final fileName = file.path.split("/").last;
           final fileSize = await file.length();
           sendSocketMessage(
-            messageType: "file",
+            messageType: filePickerService.getMessageType(fileName),
             fileName: fileName,
             fileUrl: fileUrl,
             fileSize: fileSize,
@@ -161,7 +160,7 @@ class ChatScreenController extends GetxController {
       final fileName = image.path.split("/").last;
       final fileSize = await image.length();
       sendSocketMessage(
-        messageType: "image",
+        messageType: filePickerService.getMessageType(fileName),
         fileName: fileName,
         fileUrl: imageUrl,
         fileSize: fileSize,

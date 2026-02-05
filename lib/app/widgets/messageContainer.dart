@@ -1,9 +1,11 @@
 import 'package:chat_backend/app/routes/app_routes.dart';
 import 'package:chat_backend/app/services/capitalize_service.dart';
 import 'package:chat_backend/app/widgets/customText.dart';
+import 'package:chat_backend/app/widgets/imageContainer.dart';
+import 'package:chat_backend/app/widgets/pdf_bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/utils.dart';
+import 'package:pdfrx/pdfrx.dart';
 import 'package:readmore/readmore.dart';
 
 class MessageContainer extends StatelessWidget {
@@ -14,7 +16,9 @@ class MessageContainer extends StatelessWidget {
   final bool isFile;
   final String? fileType;
   final String? fileUrl;
+  final String? fileName;
   final String? videoThumbnailUrl;
+  final int? fileSize;
 
   const MessageContainer({
     super.key,
@@ -25,6 +29,8 @@ class MessageContainer extends StatelessWidget {
     this.fileType,
     this.fileUrl,
     this.videoThumbnailUrl,
+    this.fileName,
+    this.fileSize,
     required this.isFile,
   });
 
@@ -37,8 +43,10 @@ class MessageContainer extends StatelessWidget {
       decoration: BoxDecoration(
         color: isMe
             ? fileType != "text"
-                  ? const Color.fromRGBO(43, 43, 73, 1)
+                  ? const Color.fromRGBO(36, 36, 62, 1)
                   : Colors.blueAccent
+            : fileType != "text"
+            ? const Color.fromRGBO(36, 36, 62, 1)
             : Colors.grey.shade700,
         borderRadius: BorderRadius.circular(14),
       ),
@@ -57,36 +65,33 @@ class MessageContainer extends StatelessWidget {
           message == "" || !isFile
               ? GestureDetector(
                   onTap: () {
-                    if (fileType == "file") {
-                      Get.toNamed(Routes.VIDEO_OPEN_SCREEN);
-                    } else {
+                    if (fileType == "video") {
+                      Get.toNamed(
+                        Routes.VIDEO_OPEN_SCREEN,
+                        arguments: {"videoUrl": fileUrl},
+                      );
+                    } else if (fileType == "image") {
                       Get.toNamed(
                         Routes.IMAGE_OPEN_SCREEN,
                         arguments: {"fileUrl": fileUrl},
                       );
-                    }
+                    } else {}
                   },
                   child: Stack(
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(12),
-                        child: Image.network(
-                          fileType == "file" ? videoThumbnailUrl! : fileUrl!,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              padding: const EdgeInsets.all(8),
-                              color: Colors.grey,
-                              child: const CustomText(
-                                text: "Could not load file preview",
-                                color: Colors.white,
-                                size: 14,
+                        child: fileType == "video"
+                            ? ImageContainer(fileUrl: videoThumbnailUrl!)
+                            : fileType == "image"
+                            ? ImageContainer(fileUrl: fileUrl!)
+                            : PdfMessageBubble(
+                                fileName: fileName!,
+                                fileUrl: fileUrl!,
+                                fileSize: fileSize!,
                               ),
-                            );
-                          },
-                        ),
                       ),
-                      if (fileType == "file")
+                      if (fileType == "video")
                         Positioned.fill(
                           child: Container(
                             padding: const EdgeInsets.all(12),

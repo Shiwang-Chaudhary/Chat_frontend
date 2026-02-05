@@ -10,7 +10,6 @@ import '../modules/VideoOpenScreen/bindings/video_open_screen_binding.dart';
 import '../modules/VideoOpenScreen/views/video_open_screen_view.dart';
 import '../modules/bottomNavBar/bindings/bottom_nav_bar_binding.dart';
 import '../modules/bottomNavBar/views/bottom_nav_bar_view.dart';
-import '../modules/chatScreen/bindings/chat_screen_binding.dart';
 import '../modules/chatScreen/views/chat_screen_view.dart';
 import '../modules/createGroupScreen/bindings/create_group_screen_binding.dart';
 import '../modules/createGroupScreen/views/create_group_screen_view.dart';

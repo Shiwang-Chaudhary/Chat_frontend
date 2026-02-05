@@ -6,13 +6,11 @@ import 'package:get/get.dart';
 import '../controllers/bottom_nav_bar_controller.dart';
 
 class BottomNavBarView extends GetView<BottomNavBarController> {
-  const BottomNavBarView({Key? key}) : super(key: key);
+  const BottomNavBarView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(
-        () => controller.pages[controller.selectedIndex.value],
-      ),
+      body: Obx(() => controller.pages[controller.selectedIndex.value]),
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
           selectedItemColor: Colors.blue,

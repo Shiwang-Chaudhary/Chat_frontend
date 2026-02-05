@@ -35,4 +35,15 @@ class FilePickerService {
     }
     return null;
   }
+
+  String getMessageType(String fileName) {
+    final ext = fileName.split(".").last.toLowerCase();
+
+    if (["jpg", "jpeg", "png"].contains(ext)) return "image";
+    if (["mp4", "mov"].contains(ext)) return "video";
+    if (["mp3", "wav"].contains(ext)) return "audio";
+    if (["pdf", "docx"].contains(ext)) return "document";
+
+    return "file";
+  }
 }

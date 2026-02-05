@@ -61,13 +61,15 @@ class ChatScreenView extends GetView<ChatScreenController> {
                         final String fileType = data["messageType"] ?? "text";
                         final String fileUrl = data["fileUrl"] ?? "";
                         final String videoThumbnailUrl = fileUrl.replaceAll(
-                          ".mp4",
+                          RegExp(r'\.(mp4|mov|pdf|doc|docx)$'),
                           ".jpeg",
                         );
                         final String fileName = data["fileName"] ?? "";
+                        final int fileSize = data["fileSize"] ?? 0;
                         final String dateTime = controller.formatDateTime(
                           createdAt,
                         );
+                        controller.logger.i("FileType : $fileType");
                         controller.logger.i("MESSAGE : $message");
                         controller.logger.i(
                           "THumbnail URL: $videoThumbnailUrl",
@@ -83,6 +85,8 @@ class ChatScreenView extends GetView<ChatScreenController> {
                             dateTime: dateTime,
                             fileType: fileType,
                             fileUrl: fileUrl,
+                            fileName: fileName,
+                            fileSize: fileSize,
                             videoThumbnailUrl: videoThumbnailUrl,
                           ),
                         );

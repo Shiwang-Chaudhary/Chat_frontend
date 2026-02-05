@@ -56,14 +56,16 @@ class HomeView extends GetView<HomeController> {
                   );
                   final String otherUserName = otherUser["name"];
                   final String otherUserId = otherUser["_id"];
-                  Logger().i("OTHER USER :${otherUser}");
+                  Logger().i("OTHER USER :$otherUser");
                   // log("OTHER USER name :${otherUser["name"]}");
                   // log("OTHER USER ID:${otherUser["_id"]}");
                   return ListTile(
                     leading: CircleAvatar(
                       child: CustomText(
-                          text: CapitalizeService.capitalizeEachWord(
-                              otherUserName[0])),
+                        text: CapitalizeService.capitalizeEachWord(
+                          otherUserName[0],
+                        ),
+                      ),
                     ),
                     title: CustomText(
                       text: CapitalizeService.capitalizeEachWord(otherUserName),
@@ -80,7 +82,7 @@ class HomeView extends GetView<HomeController> {
                         arguments: {
                           "otherUserId": otherUserId,
                           "otherUserName": otherUserName,
-                          "chatId": chatId
+                          "chatId": chatId,
                         },
                       );
                     },

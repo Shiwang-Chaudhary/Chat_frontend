@@ -7,7 +7,6 @@ import 'package:chat_backend/app/widgets/customTile.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 
 import '../controllers/group_chat_screen_controller.dart';
 
@@ -17,11 +16,7 @@ class GroupChatScreenView extends GetView<GroupChatScreenController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: CustomText(
-          text: "Chats",
-          size: 23,
-          color: Colors.white,
-        ),
+        title: CustomText(text: "Chats", size: 23, color: Colors.white),
         backgroundColor: const Color(0xFF24243E),
         centerTitle: true,
       ),
@@ -39,40 +34,42 @@ class GroupChatScreenView extends GetView<GroupChatScreenController> {
             readOnly: true,
             onTap: () => Get.toNamed(Routes.SEARCH_GROUP_SCREEN),
           ),
-          SizedBox(
-            height: 10,
-          ),
-          Obx(() => 
-          Expanded(
+          SizedBox(height: 10),
+          Obx(
+            () => Expanded(
               child: ListView.builder(
-                  itemCount: controller.groups.length,
-                  itemBuilder: (context, index) {
-                    // final logger = Logger();
-                     final group = controller.groups[index];
-                    // logger.i("GROUP : $group");
-                     final groupName = group["name"];
-                    // logger.i("GROUP NAME: $groupName");
-                     final adminName = group["admin"]["name"];
-                    // logger.i("ADMIN NAME: $adminName");
-                    final chatId = group["_id"];
-                    final members = group["members"];
-                    return CustomTile(
-                        icon: Icons.chat,
-                        text: groupName,
-                        ontap: () {
-                          Get.to(
-                            ()=> GrpMessageScreenView(),
-                            binding: BindingsBuilder(() {
-                              Get.put(GrpMessageScreenController());
-                            }),
-                            arguments: {
-                              "groupName" : groupName,
-                              "chatId" : chatId,
-                              "members" : members
-                            }
-                          );
-                        });
-                  })))
+                itemCount: controller.groups.length,
+                itemBuilder: (context, index) {
+                  // final logger = Logger();
+                  final group = controller.groups[index];
+                  // logger.i("GROUP : $group");
+                  final groupName = group["name"];
+                  // logger.i("GROUP NAME: $groupName");
+                  final adminName = group["admin"]["name"];
+                  // logger.i("ADMIN NAME: $adminName");
+                  final chatId = group["_id"];
+                  final members = group["members"];
+                  return CustomTile(
+                    icon: Icons.chat,
+                    text: groupName,
+                    ontap: () {
+                      Get.to(
+                        () => GrpMessageScreenView(),
+                        binding: BindingsBuilder(() {
+                          Get.put(GrpMessageScreenController());
+                        }),
+                        arguments: {
+                          "groupName": groupName,
+                          "chatId": chatId,
+                          "members": members,
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -80,7 +77,7 @@ class GroupChatScreenView extends GetView<GroupChatScreenController> {
           controller.openCreateGroupScreen();
         },
         backgroundColor: Colors.blue,
-        child: const Icon(Icons.group_add,color: Colors.white,),
+        child: const Icon(Icons.group_add, color: Colors.white),
       ),
     );
   }

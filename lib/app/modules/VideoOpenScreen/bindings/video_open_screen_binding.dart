@@ -5,8 +5,6 @@ import '../controllers/video_open_screen_controller.dart';
 class VideoOpenScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<VideoOpenScreenController>(
-      () => VideoOpenScreenController(),
-    );
+    Get.lazyPut<VideoOpenScreenController>(() => VideoOpenScreenController());
   }
 }

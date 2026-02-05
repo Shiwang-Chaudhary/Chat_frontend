@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:chat_backend/app/services/capitalize_service.dart';
 import 'package:chat_backend/app/widgets/customText.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +12,7 @@ class CreateGroupScreenView extends GetView<CreateGroupScreenController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: CustomText(
-          text: "Create Group",
-          color: Colors.white,
-          size: 26,
-        ),
+        title: CustomText(text: "Create Group", color: Colors.white, size: 26),
         centerTitle: true,
         backgroundColor: const Color(0xFF24243E),
       ),
@@ -50,10 +44,8 @@ class CreateGroupScreenView extends GetView<CreateGroupScreenController> {
                         hintStyle: TextStyle(color: Colors.white),
                         border: OutlineInputBorder(),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.blue
-                          )
-                        )
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
                       ),
                     ),
                   ),
@@ -65,12 +57,13 @@ class CreateGroupScreenView extends GetView<CreateGroupScreenController> {
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: CustomText(
-                    text: "Add members",
-                    color: Colors.white,
-                    size: 24,
-                  )),
+                alignment: Alignment.centerLeft,
+                child: CustomText(
+                  text: "Add members",
+                  color: Colors.white,
+                  size: 24,
+                ),
+              ),
             ),
             //SEARCH TEXTFIELD
             TextField(
@@ -98,53 +91,64 @@ class CreateGroupScreenView extends GetView<CreateGroupScreenController> {
                 ),
               ),
             ),
-            SizedBox(height: 20,),
+            SizedBox(height: 20),
             // 👥 Members List
             Expanded(
-              child: Obx(() =>  ListView.builder(
+              child: Obx(
+                () => ListView.builder(
                   itemCount: controller.searchedUsers.length,
                   itemBuilder: (context, index) {
                     final user = controller.searchedUsers[index];
                     final String userName = user["name"];
                     final String userId = user["_id"];
-                    controller.logger.i("isSelected:${controller.selectedMembersId.contains(userId)}");
-                    return Obx(() => ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.blue,
-                            child: CustomText(
-                                text: CapitalizeService.capitalizeEachWord(
-                                    userName[0])),
+                    controller.logger.i(
+                      "isSelected:${controller.selectedMembersId.contains(userId)}",
+                    );
+                    return Obx(
+                      () => ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.blue,
+                          child: CustomText(
+                            text: CapitalizeService.capitalizeEachWord(
+                              userName[0],
+                            ),
                           ),
-                          title: CustomText(
-                            text: CapitalizeService.capitalizeEachWord(userName),
-                            color: Colors.white,
-                            size: 20,
-                          ),
-                          trailing: Checkbox(
-                            activeColor: Colors.blue,
-                            value: controller.selectedMembersId.contains(userId),
-                            onChanged: (_) =>
-                                controller.toggleUserSelection(userId),
-                          ),
-                          onTap: () =>
+                        ),
+                        title: CustomText(
+                          text: CapitalizeService.capitalizeEachWord(userName),
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                        trailing: Checkbox(
+                          activeColor: Colors.blue,
+                          value: controller.selectedMembersId.contains(userId),
+                          onChanged: (_) =>
                               controller.toggleUserSelection(userId),
-                        ));
+                        ),
+                        onTap: () => controller.toggleUserSelection(userId),
+                      ),
+                    );
                   },
-                ),)
+                ),
+              ),
             ),
 
             // 🔵 Create Button
             Padding(
               padding: const EdgeInsets.all(16),
               child: SizedBox(
-                  width: double.infinity,
-                  height: 48,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      controller.createGroup();
-                    },
-                    child: const CustomText(text:"Create Group",color: Colors.blue,),
-                  )),
+                width: double.infinity,
+                height: 48,
+                child: ElevatedButton(
+                  onPressed: () {
+                    controller.createGroup();
+                  },
+                  child: const CustomText(
+                    text: "Create Group",
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
             ),
           ],
         ),
