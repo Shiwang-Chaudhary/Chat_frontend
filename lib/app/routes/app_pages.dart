@@ -8,8 +8,6 @@ import '../modules/OTP_screen/bindings/o_t_p_screen_binding.dart';
 import '../modules/OTP_screen/views/o_t_p_screen_view.dart';
 import '../modules/VideoOpenScreen/bindings/video_open_screen_binding.dart';
 import '../modules/VideoOpenScreen/views/video_open_screen_view.dart';
-import '../modules/audioBubble/bindings/audio_bubble_binding.dart';
-import '../modules/audioBubble/views/audio_bubble_view.dart';
 import '../modules/audioOpenScreen/bindings/audio_open_screen_binding.dart';
 import '../modules/audioOpenScreen/views/audio_open_screen_view.dart';
 import '../modules/bottomNavBar/bindings/bottom_nav_bar_binding.dart';
