@@ -8,6 +8,10 @@ import '../modules/OTP_screen/bindings/o_t_p_screen_binding.dart';
 import '../modules/OTP_screen/views/o_t_p_screen_view.dart';
 import '../modules/VideoOpenScreen/bindings/video_open_screen_binding.dart';
 import '../modules/VideoOpenScreen/views/video_open_screen_view.dart';
+import '../modules/audioBubble/bindings/audio_bubble_binding.dart';
+import '../modules/audioBubble/views/audio_bubble_view.dart';
+import '../modules/audioOpenScreen/bindings/audio_open_screen_binding.dart';
+import '../modules/audioOpenScreen/views/audio_open_screen_view.dart';
 import '../modules/bottomNavBar/bindings/bottom_nav_bar_binding.dart';
 import '../modules/bottomNavBar/views/bottom_nav_bar_view.dart';
 import '../modules/chatScreen/views/chat_screen_view.dart';
@@ -109,6 +113,16 @@ class AppPages {
       name: Routes.PDF_OPEN,
       page: () => const PdfOpenView(),
       binding: PdfOpenBinding(),
+    ),
+    GetPage(
+      name: Routes.AUDIO_OPEN_SCREEN,
+      page: () => const AudioOpenScreenView(),
+      binding: AudioOpenScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.AUDIO_BUBBLE,
+      page: () => const AudioBubbleView(),
+      binding: AudioBubbleBinding(),
     ),
   ];
 }

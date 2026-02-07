@@ -81,6 +81,8 @@ class MessageContainer extends StatelessWidget {
                         Routes.PDF_OPEN,
                         arguments: {"pdfUrl": fileUrl, "fileName": fileName},
                       );
+                    } else if (fileType == "audio") {
+                      Get.toNamed(Routes.AUDIO_OPEN_SCREEN);
                     }
                   },
                   child: Stack(
