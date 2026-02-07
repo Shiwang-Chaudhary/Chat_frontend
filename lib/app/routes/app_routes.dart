@@ -15,5 +15,4 @@ abstract class Routes {
   static const VIDEO_OPEN_SCREEN = '/video-open-screen';
   static const PDF_OPEN = '/pdf-open';
   static const AUDIO_OPEN_SCREEN = '/audio-open-screen';
-  static const AUDIO_BUBBLE = '/audio-bubble';
 }

@@ -119,10 +119,5 @@ class AppPages {
       page: () => const AudioOpenScreenView(),
       binding: AudioOpenScreenBinding(),
     ),
-    GetPage(
-      name: Routes.AUDIO_BUBBLE,
-      page: () => const AudioBubbleView(),
-      binding: AudioBubbleBinding(),
-    ),
   ];
 }
