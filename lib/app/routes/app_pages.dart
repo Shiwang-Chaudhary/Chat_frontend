@@ -19,6 +19,8 @@ import '../modules/grpMessageScreen/bindings/grp_message_screen_binding.dart';
 import '../modules/grpMessageScreen/views/grp_message_screen_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
+import '../modules/pdfOpen/bindings/pdf_open_binding.dart';
+import '../modules/pdfOpen/views/pdf_open_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 import '../modules/searchGroupScreen/bindings/search_group_screen_binding.dart';
@@ -102,6 +104,11 @@ class AppPages {
       name: Routes.VIDEO_OPEN_SCREEN,
       page: () => const VideoOpenScreenView(),
       binding: VideoOpenScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.PDF_OPEN,
+      page: () => const PdfOpenView(),
+      binding: PdfOpenBinding(),
     ),
   ];
 }

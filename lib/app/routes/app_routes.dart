@@ -13,4 +13,5 @@ abstract class Routes {
   static const GRP_MESSAGE_SCREEN = '/grp-message-screen';
   static const IMAGE_OPEN_SCREEN = '/image-open-screen';
   static const VIDEO_OPEN_SCREEN = '/video-open-screen';
+  static const PDF_OPEN = '/pdf-open';
 }

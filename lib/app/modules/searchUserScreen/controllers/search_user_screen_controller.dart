@@ -18,6 +18,7 @@ class SearchUserScreenController extends GetxController {
     searchController.dispose();
     super.onClose();
   }
+
   void seachUsers(String text) async {
     final String? token = await StorageService.getData("token");
     final query = text.trim();
@@ -25,27 +26,42 @@ class SearchUserScreenController extends GetxController {
       users.clear();
       return;
     }
-    final body =
-        await ApiService.get("${ApiEndpoints.searchUsers}?query=$text", token);
+    final body = await ApiService.get(
+      "${ApiEndpoints.searchUsers}?query=$text",
+      token,
+    );
     final List data = body["data"];
     logger.i("SearchUser DATA: $data");
     users.clear();
     users.addAll(data);
   }
 
-  void createOrGetChatRoom(String userId,String userName) async {
+  void createOrGetChatRoom(String userId, String userName) async {
     final token = await StorageService.getData("token");
     final responseBody = await ApiService.post(
-        {"userId": userId}, ApiEndpoints.createOrGetChatRoom,
-        token: token);
+      {"userId": userId},
+      ApiEndpoints.createOrGetChatRoom,
+      token: token,
+    );
 
     chatId = responseBody["Chat"]["_id"];
     logger.i("ChatId: $chatId");
     logger.i("CreateOrGetChatRoom: $responseBody");
     if (chatId != null) {
-      Get.to(() => ChatScreenView(), binding: BindingsBuilder(() {
-        Get.put(ChatScreenController());
-      }), arguments: {"chatId": chatId, "otherUserName":userName, "otherUserId":userId});
+      final result = await Get.to(
+        () => ChatScreenView(),
+        binding: BindingsBuilder(() {
+          Get.put(ChatScreenController());
+        }),
+        arguments: {
+          "chatId": chatId,
+          "otherUserName": userName,
+          "otherUserId": userId,
+        },
+      );
+      if (result == true) {
+        Get.back(result: true);
+      }
     }
   }
 }

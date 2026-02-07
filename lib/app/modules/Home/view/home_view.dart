@@ -6,9 +6,7 @@ import 'package:chat_backend/app/routes/app_routes.dart';
 import 'package:chat_backend/app/services/capitalize_service.dart';
 import 'package:chat_backend/app/widgets/customText.dart';
 import 'package:chat_backend/app/widgets/customTextfield.dart';
-import 'package:chat_backend/app/widgets/customTile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
@@ -39,7 +37,12 @@ class HomeView extends GetView<HomeController> {
             showSuffixIcon: false,
             hintText: "Search personal chats",
             readOnly: true,
-            onTap: () => Get.toNamed(Routes.SEARCH_USER_SCREEN),
+            onTap: () async {
+              final result = await Get.toNamed(Routes.SEARCH_USER_SCREEN);
+              if (result == true) {
+                controller.getChats();
+              }
+            },
           ),
           SizedBox(height: 10),
           Obx(
@@ -96,13 +99,3 @@ class HomeView extends GetView<HomeController> {
     );
   }
 }
-// ontap: () {
-//                       log("Tapped on Chat $otherUserName");
-//                       Get.to(
-//                         () => ChatScreenView(),
-//                         binding: BindingsBuilder(() {
-//                           Get.put(ChatScreenController());
-//                         }),
-//                         arguments: {"otherUserId": otherUserId, "otherUserName":otherUserName,"chatId": chatId},
-//                       );
-//                     },

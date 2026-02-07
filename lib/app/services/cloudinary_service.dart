@@ -9,7 +9,7 @@ class CloudinaryService {
       final String uploadPreset = "chat_uploads";
       final dio = Dio();
       final url =
-          "https://api.cloudinary.com/v1_1/$cloudName/auto/upload"; //"auto" detects the resource type automatically
+          "https://api.cloudinary.com/v1_1/$cloudName/image/upload"; //"auto" detects the resource type automatically
       final FormData formData = FormData.fromMap({
         "file": await MultipartFile.fromFile(file.path),
         "upload_preset": uploadPreset,

@@ -5,7 +5,7 @@ import 'package:chat_backend/app/widgets/imageContainer.dart';
 import 'package:chat_backend/app/widgets/pdf_bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pdfrx/pdfrx.dart';
+import 'package:logger/web.dart';
 import 'package:readmore/readmore.dart';
 
 class MessageContainer extends StatelessWidget {
@@ -75,7 +75,13 @@ class MessageContainer extends StatelessWidget {
                         Routes.IMAGE_OPEN_SCREEN,
                         arguments: {"fileUrl": fileUrl},
                       );
-                    } else {}
+                    } else if (fileType == "document") {
+                      Logger().i("Opening PDF: $fileUrl");
+                      Get.toNamed(
+                        Routes.PDF_OPEN,
+                        arguments: {"pdfUrl": fileUrl, "fileName": fileName},
+                      );
+                    }
                   },
                   child: Stack(
                     children: [

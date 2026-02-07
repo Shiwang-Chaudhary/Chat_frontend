@@ -32,9 +32,9 @@ class ChatScreenController extends GetxController {
     otherUserName = Get.arguments["otherUserName"];
     initializeSocket();
     getMessages();
-    // logger.i("ChatId: $chatId");
-    // logger.i("Other User Id: $otherUserName");
-    // logger.i("Other User Id: $otherUserId");
+    logger.i("ChatId: $chatId");
+    logger.i("Other User Id: $otherUserName");
+    logger.i("Other User Id: $otherUserId");
   }
 
   @override
@@ -54,7 +54,7 @@ class ChatScreenController extends GetxController {
       return;
     }
     socket = IO.io(
-      "http://192.168.1.6:3000",
+      "http://192.168.1.11:3000",
       // "https://shiwang-chat-backend.onrender.com",
       IO.OptionBuilder()
           .setTransports(["websocket"])

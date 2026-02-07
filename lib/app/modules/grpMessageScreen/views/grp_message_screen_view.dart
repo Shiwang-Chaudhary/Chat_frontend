@@ -55,10 +55,10 @@ class GrpMessageScreenView extends GetView<GrpMessageScreenController> {
                   final fileUrl = data["fileUrl"];
                   final fileName = data["fileName"];
                   final fileSize = data["fileSize"];
-                  final String videoThumbnailUrl = fileUrl.replaceAll(
-                    RegExp(r'\.(mp4|mov|pdf|doc|docx)$'),
-                    ".jpeg",
-                  );
+                  // final String videoThumbnailUrl = fileUrl.replaceAll(
+                  //   RegExp(r'\.(mp4|mov|pdf|doc|docx)$'),
+                  //   ".jpeg",
+                  // );
                   controller.logger.i("fileType :$fileType");
                   return Align(
                     alignment: isMe
@@ -74,7 +74,7 @@ class GrpMessageScreenView extends GetView<GrpMessageScreenController> {
                       fileUrl: fileUrl,
                       fileName: fileName,
                       fileSize: fileSize,
-                      videoThumbnailUrl: videoThumbnailUrl,
+                      // videoThumbnailUrl: videoThumbnailUrl,
                     ),
                   );
                 },
