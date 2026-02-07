@@ -5,11 +5,22 @@ import 'package:dio/dio.dart';
 class CloudinaryService {
   Future uploadFile(File file) async {
     try {
+      //       Usage Limits
+      // Upload API - Hourly requests: Unlimited
+      // Admin API - Hourly requests: 500
+      // Maximum number of users: 3
+      // Maximum number of product environments: 1
+      // Maximum image file size: 10 MB
+      // Maximum video file size:100 MB
+      // Maximum online image manipulation size: 100 MB
+      // Maximum raw file size: 10 MB
+      // Maximum image megapixels: 25 MP
+      // Maximum total number of megapixels in all frames: 50 MP
       final String cloudName = "dqsltl9ge";
       final String uploadPreset = "chat_uploads";
       final dio = Dio();
       final url =
-          "https://api.cloudinary.com/v1_1/$cloudName/image/upload"; //"auto" detects the resource type automatically
+          "https://api.cloudinary.com/v1_1/$cloudName/auto/upload"; //"auto" detects the resource type automatically
       final FormData formData = FormData.fromMap({
         "file": await MultipartFile.fromFile(file.path),
         "upload_preset": uploadPreset,

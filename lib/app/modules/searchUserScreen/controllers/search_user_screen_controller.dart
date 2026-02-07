@@ -14,7 +14,6 @@ class SearchUserScreenController extends GetxController {
   final logger = Logger();
   @override
   void onClose() {
-    // TODO: implement onClose
     searchController.dispose();
     super.onClose();
   }
