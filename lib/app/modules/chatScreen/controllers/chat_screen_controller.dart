@@ -22,7 +22,7 @@ class ChatScreenController extends GetxController {
   late final IO.Socket socket;
   CloudinaryService cloudinaryService = CloudinaryService();
   FilePickerService filePickerService = FilePickerService();
-
+  RxBool isLoading = true.obs;
   @override
   void onInit() {
     // TODO: implement onInit
@@ -54,7 +54,7 @@ class ChatScreenController extends GetxController {
       return;
     }
     socket = IO.io(
-      "http://192.168.1.8:3000",
+      "http://192.168.1.11:3000",
       // "https://shiwang-chat-backend.onrender.com",
       IO.OptionBuilder()
           .setTransports(["websocket"])
@@ -71,7 +71,9 @@ class ChatScreenController extends GetxController {
 
     socket.on("receiveMessage", (data) {
       final Map<String, dynamic> map = Map<String, dynamic>.from(data);
-      messages.add(map);
+      // messages.add(map);
+      messages.insert(0, map);
+      messages.refresh();
       logger.i("New message received: $data");
     });
 
@@ -108,7 +110,11 @@ class ChatScreenController extends GetxController {
     try {
       logger.d("Send message called");
       if (messageController.text.trim().isEmpty) return;
-      final msg = {"chatId": chatId, "text": messageController.text.trim()};
+      final msg = {
+        "chatId": chatId,
+        "text": messageController.text.trim(),
+        "messageType": "text",
+      };
       socket.emit("sendMessage", msg);
       messageController.clear();
     } catch (e) {
@@ -179,12 +185,14 @@ class ChatScreenController extends GetxController {
       token,
     );
 
-    final List messageList = response["data"];
+    final List<Map<String, dynamic>> messageList =
+        List<Map<String, dynamic>>.from(response["data"]);
     logger.i("Fetched Messages: ${jsonEncode(messageList)}");
     messages.clear(); //SO THAT OLD MESSAGES ARE REMOVED BEFORE ADDING NEW ONES
-    messages.addAll(messageList.cast<Map<String, dynamic>>());
+    messages.addAll(messageList.reversed.toList());
 
     logger.i("MESSAGES LOADED: ${messages.length}");
+    isLoading.value = false;
   }
 
   String formatDateTime(String isoTime) {

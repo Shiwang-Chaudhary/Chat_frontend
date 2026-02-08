@@ -20,8 +20,9 @@ class GrpMessageScreenController extends GetxController {
   late String groupName;
   late List members;
   final RxList<Map<String, dynamic>> messages = <Map<String, dynamic>>[].obs;
-  RxBool isPageLoading = false.obs;
+  RxBool isPageLoading = true.obs;
   RxBool isSendingMessageLoading = false.obs;
+  RxBool isSendingFile = false.obs;
   FilePickerService filePickerService = FilePickerService();
   CloudinaryService cloudinaryService = CloudinaryService();
   @override
@@ -56,7 +57,7 @@ class GrpMessageScreenController extends GetxController {
         return logger.e("❌ Token is NULL.");
       }
       socket = IO.io(
-        "http://192.168.1.8:3000",
+        "http://192.168.1.11:3000",
         IO.OptionBuilder()
             .setTransports(["websocket"])
             .disableAutoConnect()
@@ -66,16 +67,18 @@ class GrpMessageScreenController extends GetxController {
       socket.connect();
 
       socket.onConnect((_) {
-        logger.d("Socket connected: ${socket.id}");
+        logger.e("Socket connected: ${socket.id}");
         socket.emit("joinroom", chatId);
       });
 
       socket.on("receiveMessage", (data) {
+        logger.e("RECEIVED MESSAGE: $messages");
         final Map<String, dynamic> receivedMessage = Map<String, dynamic>.from(
           data,
         );
-        messages.add(receivedMessage);
-        logger.i("RECEIVED MESSAGE: $messages");
+        // messages.add(receivedMessage);
+        messages.insert(0, receivedMessage);
+        messages.refresh();
       });
 
       socket.on("message_error", (error) {
@@ -128,7 +131,11 @@ class GrpMessageScreenController extends GetxController {
     try {
       logger.d("Send message called");
       if (messageController.text.trim().isEmpty) return;
-      final msg = {"chatId": chatId, "text": messageController.text.trim()};
+      final msg = {
+        "chatId": chatId,
+        "text": messageController.text.trim(),
+        "messageType": "text",
+      };
       socket.emit("sendMessage", msg);
       messageController.clear();
     } catch (e) {
@@ -141,6 +148,8 @@ class GrpMessageScreenController extends GetxController {
       final List<File>? files = await filePickerService.pickMultipleFiles();
       if (files == null || files.isEmpty) return;
       if (files.length == 1) {
+        isSendingFile.value = true;
+        await Future.delayed(const Duration(milliseconds: 100));
         logger.i("Uploading single file...");
         final singleFile = files.first;
         String fileUrl = await cloudinaryService.uploadFile(singleFile);
@@ -169,13 +178,20 @@ class GrpMessageScreenController extends GetxController {
     } catch (e) {
       logger.e("Error in picking or sending file(s): ${e.toString()}");
       Get.snackbar("File error", "Failed to send file(s). Please try again.");
+    } finally {
+      isSendingFile.value = false;
     }
   }
 
   void pickAndSendImage() async {
     try {
       final image = await filePickerService.pickImage();
-      if (image == null) return;
+      isSendingFile.value = true;
+      if (image == null) {
+        isSendingFile.value = false;
+        return;
+      }
+      await Future.delayed(const Duration(milliseconds: 100));
       String imageUrl = await cloudinaryService.uploadFile(image);
       final fileName = image.path.split("/").last;
       final fileSize = await image.length();
@@ -188,6 +204,8 @@ class GrpMessageScreenController extends GetxController {
     } catch (e) {
       logger.e("Error in picking or sending image: ${e.toString()}");
       Get.snackbar("Image error", "Failed to send image. Please try again.");
+    } finally {
+      isSendingFile.value = false;
     }
   }
   // void sendMessage() async {
@@ -211,7 +229,6 @@ class GrpMessageScreenController extends GetxController {
 
   void getMessages() async {
     try {
-      isPageLoading.value = true;
       loggedUserId = await StorageService.getData("id");
       final token = await StorageService.getData("token");
       final body = await ApiService.get(
@@ -221,7 +238,7 @@ class GrpMessageScreenController extends GetxController {
       final List<Map<String, dynamic>> messageList =
           List<Map<String, dynamic>>.from(body["data"]);
       logger.i("GetMessage data: $messageList");
-      messages.assignAll(messageList);
+      messages.assignAll(messageList.reversed.toList());
       logger.i("MESSAGE LIST data: $messages");
       logger.i("Total message: ${messages.length}");
     } catch (e) {

@@ -34,12 +34,59 @@ class GrpMessageScreenView extends GetView<GrpMessageScreenController> {
           ],
         ),
       ),
-      backgroundColor: const Color(0xFF24243E),
+      backgroundColor: Color.fromRGBO(43, 43, 72, 1),
       body: Column(
         children: [
           Expanded(
-            child: Obx(
-              () => ListView.builder(
+            child: Obx(() {
+              if (controller.isPageLoading.value) {
+                return Center(
+                  child: CircularProgressIndicator(color: Colors.blue),
+                );
+              }
+              if (controller.isSendingFile.value == true) {
+                return Center(
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.blueGrey,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Text(
+                          "Uploading...",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+              if (controller.messages.isEmpty) {
+                return Container(
+                  alignment: Alignment.center,
+                  child: CustomText(
+                    text: "No messages yet. Start the conversation!",
+                    size: 16,
+                    color: Colors.white54,
+                  ),
+                );
+              }
+
+              return ListView.builder(
+                reverse: true,
                 itemCount: controller.messages.length,
                 itemBuilder: (context, index) {
                   final data = controller.messages[index];
@@ -55,10 +102,12 @@ class GrpMessageScreenView extends GetView<GrpMessageScreenController> {
                   final fileUrl = data["fileUrl"];
                   final fileName = data["fileName"];
                   final fileSize = data["fileSize"];
-                  // final String videoThumbnailUrl = fileUrl.replaceAll(
-                  //   RegExp(r'\.(mp4|mov|pdf|doc|docx)$'),
-                  //   ".jpeg",
-                  // );
+                  final String? videoThumbnailUrl = fileUrl == null
+                      ? ""
+                      : fileUrl.replaceAll(
+                          RegExp(r'\.(mp4|mov|pdf|doc|docx)$'),
+                          ".jpeg",
+                        );
                   controller.logger.i("fileType :$fileType");
                   return Align(
                     alignment: isMe
@@ -74,12 +123,12 @@ class GrpMessageScreenView extends GetView<GrpMessageScreenController> {
                       fileUrl: fileUrl,
                       fileName: fileName,
                       fileSize: fileSize,
-                      // videoThumbnailUrl: videoThumbnailUrl,
+                      videoThumbnailUrl: videoThumbnailUrl,
                     ),
                   );
                 },
-              ),
-            ),
+              );
+            }),
           ),
           MessageTextfield(controller: controller),
         ],

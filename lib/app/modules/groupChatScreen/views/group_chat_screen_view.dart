@@ -17,7 +17,7 @@ class GroupChatScreenView extends GetView<GroupChatScreenController> {
     return Scaffold(
       appBar: AppBar(
         title: CustomText(text: "Chats", size: 23, color: Colors.white),
-        backgroundColor: const Color(0xFF24243E),
+        backgroundColor: Color.fromRGBO(43, 43, 73, 1),
         centerTitle: true,
       ),
       backgroundColor: const Color(0xFF24243E),

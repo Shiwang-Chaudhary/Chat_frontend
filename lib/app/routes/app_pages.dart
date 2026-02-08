@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-
 import '../modules/Home/bindings/home_binding.dart';
 import '../modules/Home/view/home_view.dart';
 import '../modules/ImageOpenScreen/bindings/image_open_screen_binding.dart';
@@ -8,8 +7,6 @@ import '../modules/OTP_screen/bindings/o_t_p_screen_binding.dart';
 import '../modules/OTP_screen/views/o_t_p_screen_view.dart';
 import '../modules/VideoOpenScreen/bindings/video_open_screen_binding.dart';
 import '../modules/VideoOpenScreen/views/video_open_screen_view.dart';
-import '../modules/audioOpenScreen/bindings/audio_open_screen_binding.dart';
-import '../modules/audioOpenScreen/views/audio_open_screen_view.dart';
 import '../modules/bottomNavBar/bindings/bottom_nav_bar_binding.dart';
 import '../modules/bottomNavBar/views/bottom_nav_bar_view.dart';
 import '../modules/chatScreen/views/chat_screen_view.dart';
@@ -111,11 +108,6 @@ class AppPages {
       name: Routes.PDF_OPEN,
       page: () => const PdfOpenView(),
       binding: PdfOpenBinding(),
-    ),
-    GetPage(
-      name: Routes.AUDIO_OPEN_SCREEN,
-      page: () => const AudioOpenScreenView(),
-      binding: AudioOpenScreenBinding(),
     ),
   ];
 }

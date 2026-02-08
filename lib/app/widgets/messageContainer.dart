@@ -1,5 +1,7 @@
+import 'package:chat_backend/app/modules/audioOpenScreen/views/audio_open_screen_view.dart';
 import 'package:chat_backend/app/routes/app_routes.dart';
 import 'package:chat_backend/app/services/capitalize_service.dart';
+import 'package:chat_backend/app/widgets/audio_bubble.dart';
 import 'package:chat_backend/app/widgets/customText.dart';
 import 'package:chat_backend/app/widgets/imageContainer.dart';
 import 'package:chat_backend/app/widgets/pdf_bubble.dart';
@@ -43,10 +45,10 @@ class MessageContainer extends StatelessWidget {
       decoration: BoxDecoration(
         color: isMe
             ? fileType != "text"
-                  ? const Color.fromRGBO(36, 36, 62, 1)
+                  ? const Color.fromRGBO(43, 43, 73, 1)
                   : Colors.blueAccent
             : fileType != "text"
-            ? const Color.fromRGBO(36, 36, 62, 1)
+            ? const Color.fromRGBO(43, 43, 73, 1)
             : Colors.grey.shade700,
         borderRadius: BorderRadius.circular(14),
       ),
@@ -81,8 +83,6 @@ class MessageContainer extends StatelessWidget {
                         Routes.PDF_OPEN,
                         arguments: {"pdfUrl": fileUrl, "fileName": fileName},
                       );
-                    } else if (fileType == "audio") {
-                      Get.toNamed(Routes.AUDIO_OPEN_SCREEN);
                     }
                   },
                   child: Stack(
@@ -93,6 +93,8 @@ class MessageContainer extends StatelessWidget {
                             ? ImageContainer(fileUrl: videoThumbnailUrl!)
                             : fileType == "image"
                             ? ImageContainer(fileUrl: fileUrl!)
+                            : fileType == "audio"
+                            ? AudioOpenScreenView(audioUrl: fileUrl, isMe: isMe)
                             : PdfMessageBubble(
                                 fileName: fileName!,
                                 fileUrl: fileUrl!,
