@@ -50,6 +50,36 @@ class ChatScreenView extends GetView<ChatScreenController> {
                     child: CircularProgressIndicator(color: Colors.blue),
                   );
                 }
+                if (controller.isSendingFile.value == true) {
+                  return Center(
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      margin: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.blueGrey,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            "Uploading...",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
                 if (controller.messages.isEmpty) {
                   return Container(
                     alignment: Alignment.center,

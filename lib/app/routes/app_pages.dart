@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+
 import '../modules/Home/bindings/home_binding.dart';
 import '../modules/Home/view/home_view.dart';
 import '../modules/ImageOpenScreen/bindings/image_open_screen_binding.dart';
@@ -7,6 +8,8 @@ import '../modules/OTP_screen/bindings/o_t_p_screen_binding.dart';
 import '../modules/OTP_screen/views/o_t_p_screen_view.dart';
 import '../modules/VideoOpenScreen/bindings/video_open_screen_binding.dart';
 import '../modules/VideoOpenScreen/views/video_open_screen_view.dart';
+import '../modules/addMemberScreen/bindings/add_member_screen_binding.dart';
+import '../modules/addMemberScreen/views/add_member_screen_view.dart';
 import '../modules/bottomNavBar/bindings/bottom_nav_bar_binding.dart';
 import '../modules/bottomNavBar/views/bottom_nav_bar_view.dart';
 import '../modules/chatScreen/views/chat_screen_view.dart';
@@ -14,6 +17,8 @@ import '../modules/createGroupScreen/bindings/create_group_screen_binding.dart';
 import '../modules/createGroupScreen/views/create_group_screen_view.dart';
 import '../modules/groupChatScreen/bindings/group_chat_screen_binding.dart';
 import '../modules/groupChatScreen/views/group_chat_screen_view.dart';
+import '../modules/grpInfotab/bindings/grp_infotab_binding.dart';
+import '../modules/grpInfotab/views/grp_infotab_view.dart';
 import '../modules/grpMessageScreen/bindings/grp_message_screen_binding.dart';
 import '../modules/grpMessageScreen/views/grp_message_screen_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -108,6 +113,16 @@ class AppPages {
       name: Routes.PDF_OPEN,
       page: () => const PdfOpenView(),
       binding: PdfOpenBinding(),
+    ),
+    GetPage(
+      name: Routes.GRP_INFOTAB,
+      page: () => const GrpInfotabView(),
+      binding: GrpInfotabBinding(),
+    ),
+    GetPage(
+      name: Routes.ADD_MEMBER_SCREEN,
+      page: () => const AddMemberScreenView(),
+      binding: AddMemberScreenBinding(),
     ),
   ];
 }

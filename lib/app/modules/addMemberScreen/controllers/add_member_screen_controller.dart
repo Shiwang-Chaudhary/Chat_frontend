@@ -5,14 +5,26 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
-class CreateGroupScreenController extends GetxController {
-  final TextEditingController groupNameController = TextEditingController();
+class AddMemberScreenController extends GetxController {
   final TextEditingController searchController = TextEditingController();
   final RxList<Map<String, dynamic>> searchedUsers =
       <Map<String, dynamic>>[].obs;
   final RxList<String> selectedMembersId = <String>[].obs;
-  late String? chatId;
+  late String chatId;
+  late List members;
+  late Map admin;
+
   final logger = Logger();
+  @override
+  void onInit() {
+    members = Get.arguments["members"];
+    chatId = Get.arguments["chatId"];
+    admin = Get.arguments["admin"];
+    logger.i("AdminInfo: $admin");
+    logger.i("ChatId: $chatId");
+    logger.i("MembersInfo after sorting from previousScreen: $members");
+    super.onInit();
+  }
 
   void toggleUserSelection(String userId) async {
     logger.i("toggleUserSelection Called");
@@ -43,27 +55,14 @@ class CreateGroupScreenController extends GetxController {
     // logger.i("SearchUser List: $searchedUsers");
   }
 
-  void createGroup() async {
-    logger.i("CreateGroup called");
+  void addMembers() async {
     final token = await StorageService.getData("token");
-    if (groupNameController.text.isNotEmpty) {
-      final body = await ApiService.post(
-        {"name": groupNameController.text.trim(), "members": selectedMembersId},
-        ApiEndpoints.createGroupChat,
-        token: token,
-      );
-      logger.i("Create group data: $body");
-      Get.back(result: true);
-    } else {
-      logger.e("Please enter the group name");
-      Get.snackbar("Error", "Please add the group name");
-    }
-  }
-
-  @override
-  void onClose() {
-    groupNameController.dispose();
-    searchController.dispose();
-    super.onClose();
+    final responseBody = await ApiService.patch(
+      {"chatId": chatId, "members": selectedMembersId},
+      ApiEndpoints.addMembers,
+      token: token,
+    );
+    logger.i("Add member responseBody:$responseBody");
+    Get.back(result: true);
   }
 }

@@ -22,6 +22,7 @@ class GroupChatScreenView extends GetView<GroupChatScreenController> {
       ),
       backgroundColor: const Color(0xFF24243E),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // ElevatedButton(onPressed: (){
           //   controller.getGroupChats();
@@ -35,8 +36,21 @@ class GroupChatScreenView extends GetView<GroupChatScreenController> {
             onTap: () => Get.toNamed(Routes.SEARCH_GROUP_SCREEN),
           ),
           SizedBox(height: 10),
-          Obx(
-            () => Expanded(
+          Obx(() {
+            if (controller.isLoading.value) {
+              return Column(
+                children: [
+                  SizedBox(height: 200),
+                  CircularProgressIndicator(color: Colors.blue),
+                ],
+              );
+            }
+            if (controller.groups.isEmpty) {
+              return Center(
+                child: CustomText(text: "No chats. \n Start chatting now"),
+              );
+            }
+            return Expanded(
               child: ListView.builder(
                 itemCount: controller.groups.length,
                 itemBuilder: (context, index) {
@@ -45,7 +59,7 @@ class GroupChatScreenView extends GetView<GroupChatScreenController> {
                   // logger.i("GROUP : $group");
                   final groupName = group["name"];
                   // logger.i("GROUP NAME: $groupName");
-                  final adminName = group["admin"]["name"];
+                  final admin = group["admin"];
                   // logger.i("ADMIN NAME: $adminName");
                   final chatId = group["_id"];
                   final members = group["members"];
@@ -62,14 +76,15 @@ class GroupChatScreenView extends GetView<GroupChatScreenController> {
                           "groupName": groupName,
                           "chatId": chatId,
                           "members": members,
+                          "admin": admin,
                         },
                       );
                     },
                   );
                 },
               ),
-            ),
-          ),
+            );
+          }),
         ],
       ),
       floatingActionButton: FloatingActionButton(

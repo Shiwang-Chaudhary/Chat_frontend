@@ -9,7 +9,7 @@ import 'package:logger/logger.dart';
 class GroupChatScreenController extends GetxController {
   final TextEditingController searchGrpController = TextEditingController();
   final logger = Logger();
-  // late RxList members;
+  RxBool isLoading = true.obs;
   var groups = [].obs;
   @override
   void onInit() {
@@ -17,18 +17,21 @@ class GroupChatScreenController extends GetxController {
     super.onInit();
     getGroupChats();
   }
-  void openCreateGroupScreen()async{
+
+  void openCreateGroupScreen() async {
     final result = await Get.toNamed(Routes.CREATE_GROUP_SCREEN);
-    if (result!=null) {
+    if (result != null) {
       getGroupChats();
     }
   }
-  void getGroupChats()async{
+
+  void getGroupChats() async {
     final token = await StorageService.getData("token");
     final response = await ApiService.get(ApiEndpoints.getGroupChats, token);
     logger.i("Get Group Chat: $response");
     final groupData = response["data"];
     // members = response["members"];
     groups.assignAll(groupData);
+    isLoading.value = false;
   }
 }

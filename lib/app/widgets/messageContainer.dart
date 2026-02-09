@@ -1,7 +1,6 @@
 import 'package:chat_backend/app/modules/audioOpenScreen/views/audio_open_screen_view.dart';
 import 'package:chat_backend/app/routes/app_routes.dart';
 import 'package:chat_backend/app/services/capitalize_service.dart';
-import 'package:chat_backend/app/widgets/audio_bubble.dart';
 import 'package:chat_backend/app/widgets/customText.dart';
 import 'package:chat_backend/app/widgets/imageContainer.dart';
 import 'package:chat_backend/app/widgets/pdf_bubble.dart';

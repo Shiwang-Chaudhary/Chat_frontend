@@ -18,7 +18,8 @@ class GrpMessageScreenController extends GetxController {
   late final IO.Socket socket;
   late String chatId;
   late String groupName;
-  late List members;
+  late List membersInfo;
+  late Map<String, dynamic> adminInfo;
   final RxList<Map<String, dynamic>> messages = <Map<String, dynamic>>[].obs;
   RxBool isPageLoading = true.obs;
   RxBool isSendingMessageLoading = false.obs;
@@ -29,11 +30,13 @@ class GrpMessageScreenController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     groupName = Get.arguments["groupName"];
-    members = Get.arguments["members"];
+    membersInfo = Get.arguments["members"];
     chatId = Get.arguments["chatId"];
-    logger.i("Group Name: $groupName");
-    logger.i("Group members: $members");
-    logger.i("Group Id: $chatId");
+    adminInfo = Get.arguments["admin"];
+    // logger.i("Group Name: $groupName");
+    logger.i("Admin Info: $adminInfo");
+    logger.i("Group members: $membersInfo");
+    // logger.i("Group Id: $chatId");
     getMessages();
     initializeSocket();
     super.onInit();
@@ -67,7 +70,7 @@ class GrpMessageScreenController extends GetxController {
       socket.connect();
 
       socket.onConnect((_) {
-        logger.e("Socket connected: ${socket.id}");
+        logger.i("Socket connected: ${socket.id}");
         socket.emit("joinroom", chatId);
       });
 
@@ -149,7 +152,7 @@ class GrpMessageScreenController extends GetxController {
       if (files == null || files.isEmpty) return;
       if (files.length == 1) {
         isSendingFile.value = true;
-        await Future.delayed(const Duration(milliseconds: 100));
+        await Future.delayed(const Duration(milliseconds: 50));
         logger.i("Uploading single file...");
         final singleFile = files.first;
         String fileUrl = await cloudinaryService.uploadFile(singleFile);
@@ -237,10 +240,10 @@ class GrpMessageScreenController extends GetxController {
       );
       final List<Map<String, dynamic>> messageList =
           List<Map<String, dynamic>>.from(body["data"]);
-      logger.i("GetMessage data: $messageList");
+      // logger.i("GetMessage data: $messageList");
       messages.assignAll(messageList.reversed.toList());
       logger.i("MESSAGE LIST data: $messages");
-      logger.i("Total message: ${messages.length}");
+      // logger.i("Total message: ${messages.length}");
     } catch (e) {
       logger.e("Error in getting message:${e.toString()}");
     } finally {

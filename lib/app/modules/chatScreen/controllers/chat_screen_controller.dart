@@ -23,6 +23,7 @@ class ChatScreenController extends GetxController {
   CloudinaryService cloudinaryService = CloudinaryService();
   FilePickerService filePickerService = FilePickerService();
   RxBool isLoading = true.obs;
+  RxBool isSendingFile = false.obs;
   @override
   void onInit() {
     // TODO: implement onInit
@@ -122,11 +123,70 @@ class ChatScreenController extends GetxController {
     }
   }
 
+  // void pickAndSendFileOrFiles() async {
+  //   try {
+  //     final List<File>? files = await filePickerService.pickMultipleFiles();
+  //     if (files == null || files.isEmpty) {
+  //       isSendingFile.value = false;
+  //       return;
+  //     }
+  //     if (files.length == 1) {
+  //       logger.i("Uploading single file...");
+  //       final singleFile = files.first;
+  //       String fileUrl = await cloudinaryService.uploadFile(singleFile);
+  //       final fileName = singleFile.path.split("/").last;
+  //       final fileSize = await singleFile.length();
+  //       sendSocketMessage(
+  //         messageType: filePickerService.getMessageType(fileName),
+  //         fileName: fileName,
+  //         fileUrl: fileUrl,
+  //         fileSize: fileSize,
+  //       );
+  //     } else {
+  //       logger.i("Uploading multiple files...");
+  //       for (var file in files) {
+  //         final String fileUrl = await cloudinaryService.uploadFile(file);
+  //         final fileName = file.path.split("/").last;
+  //         final fileSize = await file.length();
+  //         sendSocketMessage(
+  //           messageType: filePickerService.getMessageType(fileName),
+  //           fileName: fileName,
+  //           fileUrl: fileUrl,
+  //           fileSize: fileSize,
+  //         );
+  //       }
+  //     }
+  //   } catch (e) {
+  //     logger.e("Error in picking or sending file(s): ${e.toString()}");
+  //     Get.snackbar("File error", "Failed to send file(s). Please try again.");
+  //   }
+  // }
+
+  // void pickAndSendImage() async {
+  //   try {
+  //     final image = await filePickerService.pickImage();
+  //     if (image == null) return;
+  //     String imageUrl = await cloudinaryService.uploadFile(image);
+  //     final fileName = image.path.split("/").last;
+  //     final fileSize = await image.length();
+  //     sendSocketMessage(
+  //       messageType: filePickerService.getMessageType(fileName),
+  //       fileName: fileName,
+  //       fileUrl: imageUrl,
+  //       fileSize: fileSize,
+  //     );
+  //   } catch (e) {
+  //     logger.e("Error in picking or sending image: ${e.toString()}");
+  //     Get.snackbar("Image error", "Failed to send image. Please try again.");
+  //   }
+  // }
   void pickAndSendFileOrFiles() async {
     try {
       final List<File>? files = await filePickerService.pickMultipleFiles();
       if (files == null || files.isEmpty) return;
       if (files.length == 1) {
+        isSendingFile.value = true;
+        await Future.delayed(const Duration(milliseconds: 50));
         logger.i("Uploading single file...");
         final singleFile = files.first;
         String fileUrl = await cloudinaryService.uploadFile(singleFile);
@@ -155,13 +215,20 @@ class ChatScreenController extends GetxController {
     } catch (e) {
       logger.e("Error in picking or sending file(s): ${e.toString()}");
       Get.snackbar("File error", "Failed to send file(s). Please try again.");
+    } finally {
+      isSendingFile.value = false;
     }
   }
 
   void pickAndSendImage() async {
     try {
       final image = await filePickerService.pickImage();
-      if (image == null) return;
+      isSendingFile.value = true;
+      if (image == null) {
+        isSendingFile.value = false;
+        return;
+      }
+      await Future.delayed(const Duration(milliseconds: 100));
       String imageUrl = await cloudinaryService.uploadFile(image);
       final fileName = image.path.split("/").last;
       final fileSize = await image.length();
@@ -174,6 +241,8 @@ class ChatScreenController extends GetxController {
     } catch (e) {
       logger.e("Error in picking or sending image: ${e.toString()}");
       Get.snackbar("Image error", "Failed to send image. Please try again.");
+    } finally {
+      isSendingFile.value = false;
     }
   }
 

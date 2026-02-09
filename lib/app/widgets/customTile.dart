@@ -4,18 +4,25 @@ import 'package:flutter/material.dart';
 class CustomTile extends StatelessWidget {
   final IconData icon;
   final String text;
+  final String? subTitle;
+  final Color? textColor;
+  final Color? color;
   final Color? iconColor;
   final bool? showSubtitle;
   final VoidCallback ontap;
   final IconData? trailing;
-  const CustomTile(
-      {super.key,
-      required this.icon,
-      required this.text,
-      required this.ontap,
-      this.iconColor,
-      this.showSubtitle,
-      this.trailing});
+  const CustomTile({
+    super.key,
+    required this.icon,
+    required this.text,
+    required this.ontap,
+    this.iconColor,
+    this.showSubtitle,
+    this.trailing,
+    this.textColor,
+    this.color,
+    this.subTitle,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,23 +34,20 @@ class CustomTile extends StatelessWidget {
         leading: CircleAvatar(
           radius: 27,
           backgroundColor: iconColor ?? Colors.yellow,
-          child: Icon(
-            icon,
-            size: 35,
-            color: Colors.black,
-          ),
+          child: Icon(icon, size: 35, color: color ?? Colors.black),
         ),
         title: CustomText(
           text: text,
-          color: Colors.white,
+          color: textColor ?? Colors.white,
           size: 20,
           weight: FontWeight.w400,
         ),
         subtitle: showSubtitle == true
             ? CustomText(
-                text: "Last message preview",
-                color: Colors.white,
-                weight: FontWeight.w400)
+                text: subTitle ?? "Last message preview",
+                color: textColor ?? Colors.white,
+                weight: FontWeight.w400,
+              )
             : null,
         trailing: Icon(
           trailing ?? Icons.chevron_right,

@@ -12,9 +12,9 @@ class HomeController extends GetxController {
   RxList<String> chatIDs = <String>[].obs;
   RxList chats = [].obs;
   String? loggedUserId = "";
+  RxBool isLoading = true.obs;
   @override
   void onInit() async {
-    // TODO: implement onInit
     super.onInit();
     getLoggedUserId();
     getChats();
@@ -22,7 +22,6 @@ class HomeController extends GetxController {
 
   @override
   void onClose() {
-    // TODO: implement onClose
     searchController.dispose();
     super.onClose();
   }
@@ -42,5 +41,6 @@ class HomeController extends GetxController {
     }
     log("CHAT IDs LIST:$chatIDs");
     log("CHATS:$chats");
+    isLoading.value = false;
   }
 }

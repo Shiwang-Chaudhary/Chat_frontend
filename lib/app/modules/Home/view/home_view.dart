@@ -45,8 +45,21 @@ class HomeView extends GetView<HomeController> {
             },
           ),
           SizedBox(height: 10),
-          Obx(
-            () => Expanded(
+          Obx(() {
+            if (controller.isLoading.value) {
+              return Column(
+                children: [
+                  SizedBox(height: 200),
+                  CircularProgressIndicator(color: Colors.blue),
+                ],
+              );
+            }
+            if (controller.chats.isEmpty) {
+              return Center(
+                child: CustomText(text: "No chats. \n Start chatting now"),
+              );
+            }
+            return Expanded(
               child: ListView.builder(
                 itemCount: controller.chats.length,
                 itemBuilder: (context, index) {
@@ -92,8 +105,8 @@ class HomeView extends GetView<HomeController> {
                   );
                 },
               ),
-            ),
-          ),
+            );
+          }),
         ],
       ),
     );

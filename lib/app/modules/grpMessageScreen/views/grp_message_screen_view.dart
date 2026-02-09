@@ -1,3 +1,4 @@
+import 'package:chat_backend/app/routes/app_routes.dart';
 import 'package:chat_backend/app/services/capitalize_service.dart';
 import 'package:chat_backend/app/widgets/customText.dart';
 import 'package:chat_backend/app/widgets/messageContainer.dart';
@@ -15,23 +16,23 @@ class GrpMessageScreenView extends GetView<GrpMessageScreenController> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF24243E),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // ElevatedButton(onPressed: (){
-            //   controller.getMessages();
-            // }, child: CustomText(text: "TEST BUTTON")),
-            CustomText(
-              text: CapitalizeService.capitalizeEachWord(controller.groupName),
-              size: 20,
-              color: Colors.white,
-            ),
-            // CustomText(
-            //   text: controller.isOnline ? "Online" : "Offline",
-            //   size: 13,
-            //   color: Colors.greenAccent,
-            // ),
-          ],
+        title: GestureDetector(
+          onTap: () {
+            Get.toNamed(
+              Routes.GRP_INFOTAB,
+              arguments: {
+                "members": controller.membersInfo,
+                "admin": controller.adminInfo,
+                "groupName": controller.groupName,
+                "chatId": controller.chatId,
+              },
+            );
+          },
+          child: CustomText(
+            text: CapitalizeService.capitalizeEachWord(controller.groupName),
+            size: 20,
+            color: Colors.white,
+          ),
         ),
       ),
       backgroundColor: Color.fromRGBO(43, 43, 72, 1),
@@ -95,8 +96,8 @@ class GrpMessageScreenView extends GetView<GrpMessageScreenController> {
                   final senderName = data["sender"]["name"];
                   final createdAt = data["createdAt"];
                   final dateTime = controller.formatDateTime(createdAt);
-                  controller.logger.i("Data LIST:$data");
-                  controller.logger.i("SENDER NAME:$senderName");
+                  // controller.logger.i("Data LIST:$data");
+                  // controller.logger.i("SENDER NAME:$senderName");
                   final bool isMe = senderId == controller.loggedUserId;
                   final fileType = data["messageType"];
                   final fileUrl = data["fileUrl"];
@@ -108,7 +109,7 @@ class GrpMessageScreenView extends GetView<GrpMessageScreenController> {
                           RegExp(r'\.(mp4|mov|pdf|doc|docx)$'),
                           ".jpeg",
                         );
-                  controller.logger.i("fileType :$fileType");
+                  // controller.logger.i("fileType :$fileType");
                   return Align(
                     alignment: isMe
                         ? Alignment.centerRight
