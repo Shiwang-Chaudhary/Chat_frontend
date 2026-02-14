@@ -19,7 +19,7 @@ class LocationScreenView extends GetView<LocationScreenController> {
           children: [
             ElevatedButton(
               onPressed: () {
-                controller.initLocationSystem();
+                controller.initSystem();
               },
               child: Text("TEST BUTTON"),
             ),

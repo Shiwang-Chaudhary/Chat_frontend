@@ -14,6 +14,6 @@ class BottomNavBarBinding extends Bindings {
     Get.lazyPut<GroupChatScreenController>(() => GroupChatScreenController());
     // Get.lazyPut<ChatScreenController>(() => ChatScreenController());
     Get.lazyPut<ProfileController>(() => ProfileController());
-    Get.lazyPut<LocationScreenController>(() => LocationScreenController());
+    Get.lazyPut<LocationScreenController>(() => LocationScreenController(),fenix: true);
   }
 }
