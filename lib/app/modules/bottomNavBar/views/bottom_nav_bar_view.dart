@@ -14,6 +14,7 @@ class BottomNavBarView extends GetView<BottomNavBarController> {
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
           selectedItemColor: Colors.blue,
+
           backgroundColor: const Color(0xFF24243E),
           unselectedItemColor: Colors.white,
           currentIndex: controller.selectedIndex.value,
@@ -38,6 +39,12 @@ class BottomNavBarView extends GetView<BottomNavBarController> {
                   ? Bounce(child: Icon(Icons.person))
                   : Icon(Icons.person_outlined),
               label: 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon: controller.selectedIndex.value == 3
+                  ? Bounce(child: Icon(Icons.location_on))
+                  : Icon(Icons.location_on_outlined),
+              label: 'Location',
             ),
           ],
         ),

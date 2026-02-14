@@ -12,6 +12,7 @@ class ApiEndpoints {
   static String searchUsers = "chat/searchUsers";
   static String getGroupChats = "chat/getAllChats?isGroup=true";
   static String searchGroups = "chat/searchGroups";
+  static String getFriendsLocation = "location/friendLocation";
   //PATCH
   static String addMembers = "chat/addMembers";
   //DELETE

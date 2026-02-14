@@ -49,6 +49,8 @@ dependencies:
   pdfrx: ^2.2.24
   chewie: ^1.13.0
   just_audio: ^0.10.5
+  geolocator: ^14.0.2
+  google_maps_flutter: ^2.14.0
 
 dev_dependencies:
   flutter_test:

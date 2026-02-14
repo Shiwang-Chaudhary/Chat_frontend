@@ -21,6 +21,8 @@ import '../modules/grpInfotab/bindings/grp_infotab_binding.dart';
 import '../modules/grpInfotab/views/grp_infotab_view.dart';
 import '../modules/grpMessageScreen/bindings/grp_message_screen_binding.dart';
 import '../modules/grpMessageScreen/views/grp_message_screen_view.dart';
+import '../modules/locationScreen/bindings/location_screen_binding.dart';
+import '../modules/locationScreen/views/location_screen_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/pdfOpen/bindings/pdf_open_binding.dart';
@@ -123,6 +125,11 @@ class AppPages {
       name: Routes.ADD_MEMBER_SCREEN,
       page: () => const AddMemberScreenView(),
       binding: AddMemberScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.LOCATION_SCREEN,
+      page: () => const LocationScreenView(),
+      binding: LocationScreenBinding(),
     ),
   ];
 }

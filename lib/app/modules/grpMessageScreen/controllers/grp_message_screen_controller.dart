@@ -60,7 +60,7 @@ class GrpMessageScreenController extends GetxController {
         return logger.e("❌ Token is NULL.");
       }
       socket = IO.io(
-        "http://192.168.1.11:3000",
+        "http://192.168.1.4:3000",
         IO.OptionBuilder()
             .setTransports(["websocket"])
             .disableAutoConnect()

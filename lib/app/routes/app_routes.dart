@@ -16,4 +16,5 @@ abstract class Routes {
   static const PDF_OPEN = '/pdf-open';
   static const GRP_INFOTAB = '/grp-infotab';
   static const ADD_MEMBER_SCREEN = '/add-member-screen';
+  static const LOCATION_SCREEN = '/location-screen';
 }
