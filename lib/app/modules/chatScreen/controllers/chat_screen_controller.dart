@@ -55,8 +55,8 @@ class ChatScreenController extends GetxController {
       return;
     }
     socket = IO.io(
-      "http://192.168.1.3:3000",
-      // "https://shiwang-chat-backend.onrender.com",
+      // "http://192.168.1.3:3000",
+      "https://shiwang-chat-backend.onrender.com",
       IO.OptionBuilder()
           .setTransports(["websocket"])
           .disableAutoConnect()

@@ -6,8 +6,8 @@ import 'package:logger/logger.dart';
 
 class ApiService {
   static const baseUrl =
-      // "https://shiwang-chat-backend.onrender.com";
-      "http://192.168.1.3:3000";
+      "https://shiwang-chat-backend.onrender.com";
+      // "http://192.168.1.3:3000";
   //We use {String? token} so that during function call, ApiService.post(body,"chat/",{"token":token})
   static Future post(Map body, String endpoints, {String? token}) async {
     final logger = Logger();
@@ -88,7 +88,7 @@ class ApiService {
         final data = jsonDecode(response.body);
         logger.e("Error:${data["message"]}");
       }
-    } catch (e) {
+    } catch (e) { 
       final logger = Logger();
       logger.e("ApiService.patch error:${e.toString()}");
     }
