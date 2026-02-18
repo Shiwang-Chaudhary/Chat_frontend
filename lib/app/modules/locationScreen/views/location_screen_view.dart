@@ -17,12 +17,6 @@ class LocationScreenView extends GetView<LocationScreenController> {
       body: Obx(() {
         return Column(
           children: [
-            ElevatedButton(
-              onPressed: () {
-                controller.initSystem();
-              },
-              child: Text("TEST BUTTON"),
-            ),
             Expanded(
               child: GoogleMap(
                 onMapCreated: (GoogleMapController map) {
