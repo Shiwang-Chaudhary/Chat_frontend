@@ -29,6 +29,7 @@ live location tracking of friends.
 
 ## Setup Instructions
 git clone https://github.com/Shiwang-Chaudhary/Chat_frontend.git
+
 cd Chat_frontend
 
 Update API base URL inside:
