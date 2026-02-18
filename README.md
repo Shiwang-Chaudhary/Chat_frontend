@@ -28,6 +28,8 @@ live location tracking of friends.
 
 
 ## Setup Instructions
+Open terminal/cmd
+
 git clone https://github.com/Shiwang-Chaudhary/Chat_frontend.git
 
 cd Chat_frontend
