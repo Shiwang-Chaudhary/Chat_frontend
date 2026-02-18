@@ -34,6 +34,9 @@ cd Chat_frontend
 
 Update API base URL inside:
 lib/services/api_endpoints.dart
+ChatScreenController.dart
+GrpMessageController.dart
+LocationScreenController.dart
 
 flutter pub get
 
