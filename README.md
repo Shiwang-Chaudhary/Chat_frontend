@@ -1,16 +1,45 @@
-# chat_backend
+# Chat App with Live Location Sharing
 
-A new Flutter project.
+A real-time chat application built using Flutter + Node.js that supports
+live location tracking of friends.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- Real-time messaging using Socket.IO
+- Live location updates for online users
+- JWT Authentication (Login/Register)
+- Group chat functionality
+- Search user and group using searchfield
+- File sharing (Documents, Video, Audio and Images)
+- File opening within the app(PDF, Video, Audio and Images)
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Tech Stack
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Frontend
+- Flutter
+- GetX 
+#### Packages
+- socket_io_client → Real-time chat
+- geolocator + google_maps_flutter → Live location tracking
+- dio + file_picker → File upload/download
+- video_player + just_audio → Media playback
+- logger → Debugging
+
+
+## Setup Instructions
+git clone https://github.com/Shiwang-Chaudhary/Chat_frontend.git
+cd Chat_frontend
+
+Update API base URL inside:
+lib/services/api_endpoints.dart
+
+flutter pub get
+
+## Backend Repository
+
+This app requires the backend server to be running.
+
+Backend Repo: [Chat Backend](https://github.com/Shiwang-Chaudhary/Chat_backend)
+
+
