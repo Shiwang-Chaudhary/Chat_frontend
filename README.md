@@ -25,6 +25,7 @@ live location tracking of friends.
 - dio + file_picker → File upload/download
 - video_player + just_audio → Media playback
 - logger → Debugging
+- Cloudinary → For storing file
 
 
 ## Setup Instructions
