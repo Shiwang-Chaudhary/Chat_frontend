@@ -29,32 +29,23 @@ class LocationScreenController extends GetxController {
   Future<void> initSystem() async {
     try {
       await LocationPermissionService.requestLocationPermission();
-
-      // ✅ Load marker icons once
       await loadMarkerIcons();
-
-      // ✅ Connect socket
       initializeSocket();
     } catch (e) {
       logger.e("❌ Init error: $e");
     }
   }
 
-  // -------------------------------
-  // LOAD ICONS ONCE
-  // -------------------------------
+  
   Future<void> loadMarkerIcons() async {
     myIcon = await CustomMarker().toBitmapDescriptor();
     logger.i("✅ My Marker Icon Loaded");
   }
 
   Future<BitmapDescriptor> getFriendIcon(String name) async {
-    // If already cached → return instantly
     if (friendIconCache.containsKey(name)) {
       return friendIconCache[name]!;
     }
-
-    // Else create once
     final icon = await FriendMarker(name: name).toBitmapDescriptor();
     friendIconCache[name] = icon;
 
@@ -86,7 +77,6 @@ class LocationScreenController extends GetxController {
 
     socket!.onConnect((_) {
       logger.i("✅ Socket Connected Successfully");
-      // Start everything AFTER connect
       fetchFriendLocations();
       listenFriendLocationUpdates();
       startSendingMyLocation();
@@ -166,21 +156,13 @@ class LocationScreenController extends GetxController {
     }
   }
 
-  // -------------------------------
-  // UPDATE FRIEND MARKER
-  // -------------------------------
   void updateFriendMarker(dynamic data) async {
     final userId = data["user"] is Map ? data["user"]["_id"] : data["user"];
     final userName = data["user"] is Map ? data["user"]["name"] : "Friend";
-
     final latitude = (data["latitude"] as num).toDouble();
     final longitude = (data["longitude"] as num).toDouble();
-
-    // ✅ Custom friend icon (cached)
     final friendIcon = await getFriendIcon(userName);
-
     markers.removeWhere((m) => m.markerId.value == userId);
-
     markers.add(
       Marker(
         markerId: MarkerId(userId),
@@ -189,7 +171,6 @@ class LocationScreenController extends GetxController {
         infoWindow: InfoWindow(title: userName),
       ),
     );
-
     markers.refresh();
   }
 
@@ -202,8 +183,6 @@ class LocationScreenController extends GetxController {
 
   @override
   void onClose() {
-    //don't disconnect socket
-    // socket?.disconnect();
     locationStream?.cancel();
     mapController?.dispose();
     super.onClose();
